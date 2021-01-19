@@ -437,6 +437,7 @@
             this.BoardSettingsLoad_button = new System.Windows.Forms.Button();
             this.BoardSettingsSave_button = new System.Windows.Forms.Button();
             this.BoardBuiltInSettings_button = new System.Windows.Forms.Button();
+            this.buttonSuctionSensor = new System.Windows.Forms.Button();
             this.AppSettingsLoad_button = new System.Windows.Forms.Button();
             this.AppSettingsSave_button = new System.Windows.Forms.Button();
             this.Board_label = new System.Windows.Forms.Label();
@@ -1387,6 +1388,7 @@
             // SelectButtonColumn
             // 
             this.SelectButtonColumn.HeaderText = "Select";
+            this.SelectButtonColumn.MinimumWidth = 6;
             this.SelectButtonColumn.Name = "SelectButtonColumn";
             this.SelectButtonColumn.Text = "Reset";
             this.SelectButtonColumn.Width = 53;
@@ -1394,6 +1396,7 @@
             // IdColumn
             // 
             this.IdColumn.HeaderText = "ID";
+            this.IdColumn.MinimumWidth = 6;
             this.IdColumn.Name = "IdColumn";
             this.IdColumn.Width = 50;
             // 
@@ -1405,6 +1408,7 @@
             "-X",
             "+Y",
             "-Y"});
+            this.OrientationColumn.MinimumWidth = 6;
             this.OrientationColumn.Name = "OrientationColumn";
             this.OrientationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.OrientationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -1418,6 +1422,7 @@
             "90deg.",
             "180deg.",
             "270deg."});
+            this.RotationColumn.MinimumWidth = 6;
             this.RotationColumn.Name = "RotationColumn";
             this.RotationColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.RotationColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -1426,18 +1431,21 @@
             // NozzleColumn
             // 
             this.NozzleColumn.HeaderText = "Nozzle";
+            this.NozzleColumn.MinimumWidth = 6;
             this.NozzleColumn.Name = "NozzleColumn";
             this.NozzleColumn.Width = 80;
             // 
             // WidthColumn
             // 
             this.WidthColumn.HeaderText = "Width";
+            this.WidthColumn.MinimumWidth = 6;
             this.WidthColumn.Name = "WidthColumn";
             this.WidthColumn.Width = 73;
             // 
             // CapacityColumn
             // 
             this.CapacityColumn.HeaderText = "Capacity";
+            this.CapacityColumn.MinimumWidth = 6;
             this.CapacityColumn.Name = "CapacityColumn";
             this.CapacityColumn.Visible = false;
             this.CapacityColumn.Width = 73;
@@ -1449,24 +1457,28 @@
             "Paper (White)",
             "Black Plastic",
             "Clear Plastic"});
+            this.TypeColumn.MinimumWidth = 6;
             this.TypeColumn.Name = "TypeColumn";
             this.TypeColumn.Width = 46;
             // 
             // Tray_Column
             // 
             this.Tray_Column.HeaderText = "Tray";
+            this.Tray_Column.MinimumWidth = 6;
             this.Tray_Column.Name = "Tray_Column";
             this.Tray_Column.Width = 66;
             // 
             // Next_Column
             // 
             this.Next_Column.HeaderText = "Next";
+            this.Next_Column.MinimumWidth = 6;
             this.Next_Column.Name = "Next_Column";
             this.Next_Column.Width = 65;
             // 
             // X_Column
             // 
             this.X_Column.HeaderText = "X";
+            this.X_Column.MinimumWidth = 6;
             this.X_Column.Name = "X_Column";
             this.X_Column.ReadOnly = true;
             this.X_Column.Width = 46;
@@ -1474,6 +1486,7 @@
             // Y_Column
             // 
             this.Y_Column.HeaderText = "Y";
+            this.Y_Column.MinimumWidth = 6;
             this.Y_Column.Name = "Y_Column";
             this.Y_Column.ReadOnly = true;
             this.Y_Column.Width = 46;
@@ -1481,18 +1494,21 @@
             // PickupZ_Column
             // 
             this.PickupZ_Column.HeaderText = "Pickup Z";
+            this.PickupZ_Column.MinimumWidth = 6;
             this.PickupZ_Column.Name = "PickupZ_Column";
             this.PickupZ_Column.Width = 92;
             // 
             // PlaceZ_Column
             // 
             this.PlaceZ_Column.HeaderText = "PlaceZ";
+            this.PlaceZ_Column.MinimumWidth = 6;
             this.PlaceZ_Column.Name = "PlaceZ_Column";
             this.PlaceZ_Column.Width = 81;
             // 
             // NextX_Column
             // 
             this.NextX_Column.HeaderText = "Next X";
+            this.NextX_Column.MinimumWidth = 6;
             this.NextX_Column.Name = "NextX_Column";
             this.NextX_Column.ReadOnly = true;
             this.NextX_Column.Width = 78;
@@ -1500,6 +1516,7 @@
             // NextY_column
             // 
             this.NextY_column.HeaderText = "Next Y";
+            this.NextY_column.MinimumWidth = 6;
             this.NextY_column.Name = "NextY_column";
             this.NextY_column.ReadOnly = true;
             this.NextY_column.Width = 78;
@@ -1820,6 +1837,7 @@
             // SelectButton_Column
             // 
             this.SelectButton_Column.HeaderText = "Select";
+            this.SelectButton_Column.MinimumWidth = 6;
             this.SelectButton_Column.Name = "SelectButton_Column";
             this.SelectButton_Column.Text = "Reset";
             this.SelectButton_Column.Width = 53;
@@ -1827,12 +1845,14 @@
             // Id_Column
             // 
             this.Id_Column.HeaderText = "ID";
+            this.Id_Column.MinimumWidth = 6;
             this.Id_Column.Name = "Id_Column";
             this.Id_Column.Width = 50;
             // 
             // NextPart_Column
             // 
             this.NextPart_Column.HeaderText = "Next";
+            this.NextPart_Column.MinimumWidth = 6;
             this.NextPart_Column.Name = "NextPart_Column";
             this.NextPart_Column.Width = 65;
             // 
@@ -1844,6 +1864,7 @@
             "-X",
             "+Y",
             "-Y"});
+            this.Orientation_Column.MinimumWidth = 6;
             this.Orientation_Column.Name = "Orientation_Column";
             this.Orientation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Orientation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -1852,12 +1873,14 @@
             // Nozzle_Column
             // 
             this.Nozzle_Column.HeaderText = "Nozzle";
+            this.Nozzle_Column.MinimumWidth = 6;
             this.Nozzle_Column.Name = "Nozzle_Column";
             this.Nozzle_Column.Width = 80;
             // 
             // Capacity_Column
             // 
             this.Capacity_Column.HeaderText = "Capacity";
+            this.Capacity_Column.MinimumWidth = 6;
             this.Capacity_Column.Name = "Capacity_Column";
             this.Capacity_Column.Visible = false;
             this.Capacity_Column.Width = 73;
@@ -1865,6 +1888,7 @@
             // TrayID_Column
             // 
             this.TrayID_Column.HeaderText = "Tray";
+            this.TrayID_Column.MinimumWidth = 6;
             this.TrayID_Column.Name = "TrayID_Column";
             this.TrayID_Column.Width = 66;
             // 
@@ -1876,6 +1900,7 @@
             "90deg.",
             "180deg.",
             "270deg."});
+            this.Rotation_Column.MinimumWidth = 6;
             this.Rotation_Column.Name = "Rotation_Column";
             this.Rotation_Column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Rotation_Column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -1888,6 +1913,7 @@
             "Paper (White)",
             "Black Plastic",
             "Clear Plastic"});
+            this.Type_Column.MinimumWidth = 6;
             this.Type_Column.Name = "Type_Column";
             this.Type_Column.Width = 46;
             // 
@@ -1916,30 +1942,35 @@
             "32/28mm",
             "32/32mm",
             "custom"});
+            this.Width_Column.MinimumWidth = 6;
             this.Width_Column.Name = "Width_Column";
             this.Width_Column.Width = 50;
             // 
             // Pitch_Column
             // 
             this.Pitch_Column.HeaderText = "Pitch";
+            this.Pitch_Column.MinimumWidth = 6;
             this.Pitch_Column.Name = "Pitch_Column";
             this.Pitch_Column.Width = 68;
             // 
             // OffsetX_Column
             // 
             this.OffsetX_Column.HeaderText = "Offset X";
+            this.OffsetX_Column.MinimumWidth = 6;
             this.OffsetX_Column.Name = "OffsetX_Column";
             this.OffsetX_Column.Width = 82;
             // 
             // OffsetY_Column
             // 
             this.OffsetY_Column.HeaderText = "Offset Y";
+            this.OffsetY_Column.MinimumWidth = 6;
             this.OffsetY_Column.Name = "OffsetY_Column";
             this.OffsetY_Column.Width = 82;
             // 
             // FirstX_Column
             // 
             this.FirstX_Column.HeaderText = "X";
+            this.FirstX_Column.MinimumWidth = 6;
             this.FirstX_Column.Name = "FirstX_Column";
             this.FirstX_Column.ReadOnly = true;
             this.FirstX_Column.Width = 46;
@@ -1947,6 +1978,7 @@
             // FirstY_Column
             // 
             this.FirstY_Column.HeaderText = "Y";
+            this.FirstY_Column.MinimumWidth = 6;
             this.FirstY_Column.Name = "FirstY_Column";
             this.FirstY_Column.ReadOnly = true;
             this.FirstY_Column.Width = 46;
@@ -1954,18 +1986,21 @@
             // Z_Pickup_Column
             // 
             this.Z_Pickup_Column.HeaderText = "Pickup Z";
+            this.Z_Pickup_Column.MinimumWidth = 6;
             this.Z_Pickup_Column.Name = "Z_Pickup_Column";
             this.Z_Pickup_Column.Width = 85;
             // 
             // Z_Place_Column
             // 
             this.Z_Place_Column.HeaderText = "Place Z";
+            this.Z_Place_Column.MinimumWidth = 6;
             this.Z_Place_Column.Name = "Z_Place_Column";
             this.Z_Place_Column.Width = 79;
             // 
             // Next_X_Column
             // 
             this.Next_X_Column.HeaderText = "Next X";
+            this.Next_X_Column.MinimumWidth = 6;
             this.Next_X_Column.Name = "Next_X_Column";
             this.Next_X_Column.ReadOnly = true;
             this.Next_X_Column.Width = 73;
@@ -1973,6 +2008,7 @@
             // Next_Y_Column
             // 
             this.Next_Y_Column.HeaderText = "Next Y";
+            this.Next_Y_Column.MinimumWidth = 6;
             this.Next_Y_Column.Name = "Next_Y_Column";
             this.Next_Y_Column.ReadOnly = true;
             this.Next_Y_Column.Width = 73;
@@ -1980,24 +2016,28 @@
             // CoordinatesForParts_Column
             // 
             this.CoordinatesForParts_Column.HeaderText = "Coordinates for parts";
+            this.CoordinatesForParts_Column.MinimumWidth = 6;
             this.CoordinatesForParts_Column.Name = "CoordinatesForParts_Column";
             this.CoordinatesForParts_Column.Width = 104;
             // 
             // LastX_Column
             // 
             this.LastX_Column.HeaderText = "Last X";
+            this.LastX_Column.MinimumWidth = 6;
             this.LastX_Column.Name = "LastX_Column";
             this.LastX_Column.Width = 64;
             // 
             // LastY_column
             // 
             this.LastY_column.HeaderText = "Last Y";
+            this.LastY_column.MinimumWidth = 6;
             this.LastY_column.Name = "LastY_column";
             this.LastY_column.Width = 64;
             // 
             // RotationDirect_Column
             // 
             this.RotationDirect_Column.HeaderText = "Rotation";
+            this.RotationDirect_Column.MinimumWidth = 6;
             this.RotationDirect_Column.Name = "RotationDirect_Column";
             this.RotationDirect_Column.Width = 90;
             // 
@@ -2032,24 +2072,30 @@
             this.SizeY});
             this.ComponentData_dataGridView.Location = new System.Drawing.Point(24, 31);
             this.ComponentData_dataGridView.Name = "ComponentData_dataGridView";
+            this.ComponentData_dataGridView.RowHeadersWidth = 51;
             this.ComponentData_dataGridView.Size = new System.Drawing.Size(495, 583);
             this.ComponentData_dataGridView.TabIndex = 0;
             // 
             // PartialName
             // 
             this.PartialName.HeaderText = "String in Component Name";
+            this.PartialName.MinimumWidth = 6;
             this.PartialName.Name = "PartialName";
             this.PartialName.Width = 250;
             // 
             // SizeX
             // 
             this.SizeX.HeaderText = "X, mm";
+            this.SizeX.MinimumWidth = 6;
             this.SizeX.Name = "SizeX";
+            this.SizeX.Width = 125;
             // 
             // SizeY
             // 
             this.SizeY.HeaderText = "Y, mm";
+            this.SizeY.MinimumWidth = 6;
             this.SizeY.Name = "SizeY";
+            this.SizeY.Width = 125;
             // 
             // tabPageSetupCameras
             // 
@@ -2133,6 +2179,7 @@
             this.Nozzle2_dataGridView.Location = new System.Drawing.Point(460, 305);
             this.Nozzle2_dataGridView.Name = "Nozzle2_dataGridView";
             this.Nozzle2_dataGridView.RowHeadersVisible = false;
+            this.Nozzle2_dataGridView.RowHeadersWidth = 51;
             this.Nozzle2_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Nozzle2_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.Nozzle2_dataGridView.TabIndex = 145;
@@ -2150,45 +2197,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn11.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn11.Name = "dataGridViewComboBoxColumn11";
             this.dataGridViewComboBoxColumn11.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn11.Width = 125;
             // 
             // dataGridViewCheckBoxColumn11
             // 
             this.dataGridViewCheckBoxColumn11.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn11.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn11.Name = "dataGridViewCheckBoxColumn11";
             this.dataGridViewCheckBoxColumn11.Width = 50;
             // 
             // dataGridViewTextBoxColumn56
             // 
             this.dataGridViewTextBoxColumn56.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn56.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn56.Name = "dataGridViewTextBoxColumn56";
             this.dataGridViewTextBoxColumn56.ReadOnly = true;
+            this.dataGridViewTextBoxColumn56.Width = 125;
             // 
             // dataGridViewTextBoxColumn57
             // 
             this.dataGridViewTextBoxColumn57.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn57.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn57.Name = "dataGridViewTextBoxColumn57";
             this.dataGridViewTextBoxColumn57.ReadOnly = true;
+            this.dataGridViewTextBoxColumn57.Width = 125;
             // 
             // dataGridViewTextBoxColumn58
             // 
             this.dataGridViewTextBoxColumn58.HeaderText = "R";
+            this.dataGridViewTextBoxColumn58.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn58.Name = "dataGridViewTextBoxColumn58";
             this.dataGridViewTextBoxColumn58.ReadOnly = true;
+            this.dataGridViewTextBoxColumn58.Width = 125;
             // 
             // dataGridViewTextBoxColumn59
             // 
             this.dataGridViewTextBoxColumn59.HeaderText = "G";
+            this.dataGridViewTextBoxColumn59.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn59.Name = "dataGridViewTextBoxColumn59";
             this.dataGridViewTextBoxColumn59.ReadOnly = true;
+            this.dataGridViewTextBoxColumn59.Width = 125;
             // 
             // dataGridViewTextBoxColumn60
             // 
             this.dataGridViewTextBoxColumn60.HeaderText = "B";
+            this.dataGridViewTextBoxColumn60.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn60.Name = "dataGridViewTextBoxColumn60";
             this.dataGridViewTextBoxColumn60.ReadOnly = true;
+            this.dataGridViewTextBoxColumn60.Width = 125;
             // 
             // Temp_dataGridView
             // 
@@ -2206,6 +2266,7 @@
             this.Temp_dataGridView.Location = new System.Drawing.Point(154, 290);
             this.Temp_dataGridView.Name = "Temp_dataGridView";
             this.Temp_dataGridView.RowHeadersVisible = false;
+            this.Temp_dataGridView.RowHeadersWidth = 51;
             this.Temp_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Temp_dataGridView.Size = new System.Drawing.Size(213, 162);
             this.Temp_dataGridView.TabIndex = 144;
@@ -2223,45 +2284,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.Funct_column.MinimumWidth = 6;
             this.Funct_column.Name = "Funct_column";
             this.Funct_column.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Funct_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Funct_column.Width = 125;
             // 
             // Enabled_column
             // 
             this.Enabled_column.HeaderText = "Enabled";
+            this.Enabled_column.MinimumWidth = 6;
             this.Enabled_column.Name = "Enabled_column";
             this.Enabled_column.Width = 50;
             // 
             // Int1_column
             // 
             this.Int1_column.HeaderText = "Int1";
+            this.Int1_column.MinimumWidth = 6;
             this.Int1_column.Name = "Int1_column";
             this.Int1_column.ReadOnly = true;
+            this.Int1_column.Width = 125;
             // 
             // Double1_column
             // 
             this.Double1_column.HeaderText = "Double1";
+            this.Double1_column.MinimumWidth = 6;
             this.Double1_column.Name = "Double1_column";
             this.Double1_column.ReadOnly = true;
+            this.Double1_column.Width = 125;
             // 
             // R_column
             // 
             this.R_column.HeaderText = "R";
+            this.R_column.MinimumWidth = 6;
             this.R_column.Name = "R_column";
             this.R_column.ReadOnly = true;
+            this.R_column.Width = 125;
             // 
             // G_column
             // 
             this.G_column.HeaderText = "G";
+            this.G_column.MinimumWidth = 6;
             this.G_column.Name = "G_column";
             this.G_column.ReadOnly = true;
+            this.G_column.Width = 125;
             // 
             // B_column
             // 
             this.B_column.HeaderText = "B";
+            this.B_column.MinimumWidth = 6;
             this.B_column.Name = "B_column";
             this.B_column.ReadOnly = true;
+            this.B_column.Width = 125;
             // 
             // Nozzle_dataGridView
             // 
@@ -2279,6 +2353,7 @@
             this.Nozzle_dataGridView.Location = new System.Drawing.Point(404, 271);
             this.Nozzle_dataGridView.Name = "Nozzle_dataGridView";
             this.Nozzle_dataGridView.RowHeadersVisible = false;
+            this.Nozzle_dataGridView.RowHeadersWidth = 51;
             this.Nozzle_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Nozzle_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.Nozzle_dataGridView.TabIndex = 125;
@@ -2296,45 +2371,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn3.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn3.Name = "dataGridViewComboBoxColumn3";
             this.dataGridViewComboBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn3.Width = 125;
             // 
             // dataGridViewCheckBoxColumn3
             // 
             this.dataGridViewCheckBoxColumn3.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn3.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn3.Name = "dataGridViewCheckBoxColumn3";
             this.dataGridViewCheckBoxColumn3.Width = 50;
             // 
             // dataGridViewTextBoxColumn6
             // 
             this.dataGridViewTextBoxColumn6.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 125;
             // 
             // dataGridViewTextBoxColumn7
             // 
             this.dataGridViewTextBoxColumn7.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.Width = 125;
             // 
             // dataGridViewTextBoxColumn8
             // 
             this.dataGridViewTextBoxColumn8.HeaderText = "R";
+            this.dataGridViewTextBoxColumn8.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 125;
             // 
             // dataGridViewTextBoxColumn9
             // 
             this.dataGridViewTextBoxColumn9.HeaderText = "G";
+            this.dataGridViewTextBoxColumn9.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            this.dataGridViewTextBoxColumn9.Width = 125;
             // 
             // dataGridViewTextBoxColumn10
             // 
             this.dataGridViewTextBoxColumn10.HeaderText = "B";
+            this.dataGridViewTextBoxColumn10.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
             this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            this.dataGridViewTextBoxColumn10.Width = 125;
             // 
             // CamerasSetUp_tabControl
             // 
@@ -2686,6 +2774,7 @@
             this.DowncamSnapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
             this.DowncamSnapshot_dataGridView.Name = "DowncamSnapshot_dataGridView";
             this.DowncamSnapshot_dataGridView.RowHeadersVisible = false;
+            this.DowncamSnapshot_dataGridView.RowHeadersWidth = 51;
             this.DowncamSnapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DowncamSnapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.DowncamSnapshot_dataGridView.TabIndex = 126;
@@ -2703,45 +2792,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn9.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn9.Name = "dataGridViewComboBoxColumn9";
             this.dataGridViewComboBoxColumn9.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn9.Width = 125;
             // 
             // dataGridViewCheckBoxColumn9
             // 
             this.dataGridViewCheckBoxColumn9.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn9.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn9.Name = "dataGridViewCheckBoxColumn9";
             this.dataGridViewCheckBoxColumn9.Width = 50;
             // 
             // dataGridViewTextBoxColumn41
             // 
             this.dataGridViewTextBoxColumn41.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn41.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn41.Name = "dataGridViewTextBoxColumn41";
             this.dataGridViewTextBoxColumn41.ReadOnly = true;
+            this.dataGridViewTextBoxColumn41.Width = 125;
             // 
             // dataGridViewTextBoxColumn42
             // 
             this.dataGridViewTextBoxColumn42.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn42.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn42.Name = "dataGridViewTextBoxColumn42";
             this.dataGridViewTextBoxColumn42.ReadOnly = true;
+            this.dataGridViewTextBoxColumn42.Width = 125;
             // 
             // dataGridViewTextBoxColumn43
             // 
             this.dataGridViewTextBoxColumn43.HeaderText = "R";
+            this.dataGridViewTextBoxColumn43.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn43.Name = "dataGridViewTextBoxColumn43";
             this.dataGridViewTextBoxColumn43.ReadOnly = true;
+            this.dataGridViewTextBoxColumn43.Width = 125;
             // 
             // dataGridViewTextBoxColumn44
             // 
             this.dataGridViewTextBoxColumn44.HeaderText = "G";
+            this.dataGridViewTextBoxColumn44.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn44.Name = "dataGridViewTextBoxColumn44";
             this.dataGridViewTextBoxColumn44.ReadOnly = true;
+            this.dataGridViewTextBoxColumn44.Width = 125;
             // 
             // dataGridViewTextBoxColumn45
             // 
             this.dataGridViewTextBoxColumn45.HeaderText = "B";
+            this.dataGridViewTextBoxColumn45.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn45.Name = "dataGridViewTextBoxColumn45";
             this.dataGridViewTextBoxColumn45.ReadOnly = true;
+            this.dataGridViewTextBoxColumn45.Width = 125;
             // 
             // DownCam_SnapshotToDisplay_button
             // 
@@ -2845,6 +2947,7 @@
             this.Components_dataGridView.Location = new System.Drawing.Point(168, 47);
             this.Components_dataGridView.Name = "Components_dataGridView";
             this.Components_dataGridView.RowHeadersVisible = false;
+            this.Components_dataGridView.RowHeadersWidth = 51;
             this.Components_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Components_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.Components_dataGridView.TabIndex = 126;
@@ -2862,45 +2965,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn5.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn5.Name = "dataGridViewComboBoxColumn5";
             this.dataGridViewComboBoxColumn5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn5.Width = 125;
             // 
             // dataGridViewCheckBoxColumn5
             // 
             this.dataGridViewCheckBoxColumn5.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn5.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn5.Name = "dataGridViewCheckBoxColumn5";
             this.dataGridViewCheckBoxColumn5.Width = 50;
             // 
             // dataGridViewTextBoxColumn21
             // 
             this.dataGridViewTextBoxColumn21.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn21.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
             this.dataGridViewTextBoxColumn21.ReadOnly = true;
+            this.dataGridViewTextBoxColumn21.Width = 125;
             // 
             // dataGridViewTextBoxColumn22
             // 
             this.dataGridViewTextBoxColumn22.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn22.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
             this.dataGridViewTextBoxColumn22.ReadOnly = true;
+            this.dataGridViewTextBoxColumn22.Width = 125;
             // 
             // dataGridViewTextBoxColumn23
             // 
             this.dataGridViewTextBoxColumn23.HeaderText = "R";
+            this.dataGridViewTextBoxColumn23.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
             this.dataGridViewTextBoxColumn23.ReadOnly = true;
+            this.dataGridViewTextBoxColumn23.Width = 125;
             // 
             // dataGridViewTextBoxColumn24
             // 
             this.dataGridViewTextBoxColumn24.HeaderText = "G";
+            this.dataGridViewTextBoxColumn24.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
             this.dataGridViewTextBoxColumn24.ReadOnly = true;
+            this.dataGridViewTextBoxColumn24.Width = 125;
             // 
             // dataGridViewTextBoxColumn25
             // 
             this.dataGridViewTextBoxColumn25.HeaderText = "B";
+            this.dataGridViewTextBoxColumn25.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn25.Name = "dataGridViewTextBoxColumn25";
             this.dataGridViewTextBoxColumn25.ReadOnly = true;
+            this.dataGridViewTextBoxColumn25.Width = 125;
             // 
             // ComponentsMeasure_button
             // 
@@ -3095,6 +3211,7 @@
             this.ClearTape_dataGridView.Location = new System.Drawing.Point(168, 45);
             this.ClearTape_dataGridView.Name = "ClearTape_dataGridView";
             this.ClearTape_dataGridView.RowHeadersVisible = false;
+            this.ClearTape_dataGridView.RowHeadersWidth = 51;
             this.ClearTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.ClearTape_dataGridView.Size = new System.Drawing.Size(485, 110);
             this.ClearTape_dataGridView.TabIndex = 128;
@@ -3112,6 +3229,7 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn6.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn6.Name = "dataGridViewComboBoxColumn6";
             this.dataGridViewComboBoxColumn6.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -3120,12 +3238,14 @@
             // dataGridViewCheckBoxColumn6
             // 
             this.dataGridViewCheckBoxColumn6.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn6.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn6.Name = "dataGridViewCheckBoxColumn6";
             this.dataGridViewCheckBoxColumn6.Width = 50;
             // 
             // dataGridViewTextBoxColumn26
             // 
             this.dataGridViewTextBoxColumn26.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn26.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn26.Name = "dataGridViewTextBoxColumn26";
             this.dataGridViewTextBoxColumn26.ReadOnly = true;
             this.dataGridViewTextBoxColumn26.Width = 50;
@@ -3133,6 +3253,7 @@
             // dataGridViewTextBoxColumn27
             // 
             this.dataGridViewTextBoxColumn27.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn27.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn27.Name = "dataGridViewTextBoxColumn27";
             this.dataGridViewTextBoxColumn27.ReadOnly = true;
             this.dataGridViewTextBoxColumn27.Width = 50;
@@ -3140,6 +3261,7 @@
             // dataGridViewTextBoxColumn28
             // 
             this.dataGridViewTextBoxColumn28.HeaderText = "R";
+            this.dataGridViewTextBoxColumn28.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn28.Name = "dataGridViewTextBoxColumn28";
             this.dataGridViewTextBoxColumn28.ReadOnly = true;
             this.dataGridViewTextBoxColumn28.Width = 50;
@@ -3147,6 +3269,7 @@
             // dataGridViewTextBoxColumn29
             // 
             this.dataGridViewTextBoxColumn29.HeaderText = "G";
+            this.dataGridViewTextBoxColumn29.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn29.Name = "dataGridViewTextBoxColumn29";
             this.dataGridViewTextBoxColumn29.ReadOnly = true;
             this.dataGridViewTextBoxColumn29.Width = 50;
@@ -3154,6 +3277,7 @@
             // dataGridViewTextBoxColumn30
             // 
             this.dataGridViewTextBoxColumn30.HeaderText = "B";
+            this.dataGridViewTextBoxColumn30.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn30.Name = "dataGridViewTextBoxColumn30";
             this.dataGridViewTextBoxColumn30.ReadOnly = true;
             this.dataGridViewTextBoxColumn30.Width = 50;
@@ -3223,6 +3347,7 @@
             this.BlackTape_dataGridView.Location = new System.Drawing.Point(168, 48);
             this.BlackTape_dataGridView.Name = "BlackTape_dataGridView";
             this.BlackTape_dataGridView.RowHeadersVisible = false;
+            this.BlackTape_dataGridView.RowHeadersWidth = 51;
             this.BlackTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.BlackTape_dataGridView.Size = new System.Drawing.Size(485, 110);
             this.BlackTape_dataGridView.TabIndex = 128;
@@ -3240,6 +3365,7 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn7.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn7.Name = "dataGridViewComboBoxColumn7";
             this.dataGridViewComboBoxColumn7.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -3248,12 +3374,14 @@
             // dataGridViewCheckBoxColumn7
             // 
             this.dataGridViewCheckBoxColumn7.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn7.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn7.Name = "dataGridViewCheckBoxColumn7";
             this.dataGridViewCheckBoxColumn7.Width = 50;
             // 
             // dataGridViewTextBoxColumn31
             // 
             this.dataGridViewTextBoxColumn31.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn31.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn31.Name = "dataGridViewTextBoxColumn31";
             this.dataGridViewTextBoxColumn31.ReadOnly = true;
             this.dataGridViewTextBoxColumn31.Width = 50;
@@ -3261,6 +3389,7 @@
             // dataGridViewTextBoxColumn32
             // 
             this.dataGridViewTextBoxColumn32.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn32.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn32.Name = "dataGridViewTextBoxColumn32";
             this.dataGridViewTextBoxColumn32.ReadOnly = true;
             this.dataGridViewTextBoxColumn32.Width = 50;
@@ -3268,6 +3397,7 @@
             // dataGridViewTextBoxColumn33
             // 
             this.dataGridViewTextBoxColumn33.HeaderText = "R";
+            this.dataGridViewTextBoxColumn33.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn33.Name = "dataGridViewTextBoxColumn33";
             this.dataGridViewTextBoxColumn33.ReadOnly = true;
             this.dataGridViewTextBoxColumn33.Width = 50;
@@ -3275,6 +3405,7 @@
             // dataGridViewTextBoxColumn34
             // 
             this.dataGridViewTextBoxColumn34.HeaderText = "G";
+            this.dataGridViewTextBoxColumn34.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn34.Name = "dataGridViewTextBoxColumn34";
             this.dataGridViewTextBoxColumn34.ReadOnly = true;
             this.dataGridViewTextBoxColumn34.Width = 50;
@@ -3282,6 +3413,7 @@
             // dataGridViewTextBoxColumn35
             // 
             this.dataGridViewTextBoxColumn35.HeaderText = "B";
+            this.dataGridViewTextBoxColumn35.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn35.Name = "dataGridViewTextBoxColumn35";
             this.dataGridViewTextBoxColumn35.ReadOnly = true;
             this.dataGridViewTextBoxColumn35.Width = 50;
@@ -3387,6 +3519,7 @@
             this.PaperTape_dataGridView.Location = new System.Drawing.Point(168, 47);
             this.PaperTape_dataGridView.Name = "PaperTape_dataGridView";
             this.PaperTape_dataGridView.RowHeadersVisible = false;
+            this.PaperTape_dataGridView.RowHeadersWidth = 51;
             this.PaperTape_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.PaperTape_dataGridView.Size = new System.Drawing.Size(485, 110);
             this.PaperTape_dataGridView.TabIndex = 128;
@@ -3404,6 +3537,7 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn1.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
             this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -3412,12 +3546,14 @@
             // dataGridViewCheckBoxColumn1
             // 
             this.dataGridViewCheckBoxColumn1.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn1.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
             this.dataGridViewCheckBoxColumn1.Width = 50;
             // 
             // dataGridViewTextBoxColumn11
             // 
             this.dataGridViewTextBoxColumn11.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn11.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
             this.dataGridViewTextBoxColumn11.ReadOnly = true;
             this.dataGridViewTextBoxColumn11.Width = 50;
@@ -3425,6 +3561,7 @@
             // dataGridViewTextBoxColumn12
             // 
             this.dataGridViewTextBoxColumn12.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn12.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
             this.dataGridViewTextBoxColumn12.Width = 50;
@@ -3432,6 +3569,7 @@
             // dataGridViewTextBoxColumn13
             // 
             this.dataGridViewTextBoxColumn13.HeaderText = "R";
+            this.dataGridViewTextBoxColumn13.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
             this.dataGridViewTextBoxColumn13.ReadOnly = true;
             this.dataGridViewTextBoxColumn13.Width = 50;
@@ -3439,6 +3577,7 @@
             // dataGridViewTextBoxColumn14
             // 
             this.dataGridViewTextBoxColumn14.HeaderText = "G";
+            this.dataGridViewTextBoxColumn14.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
             this.dataGridViewTextBoxColumn14.ReadOnly = true;
             this.dataGridViewTextBoxColumn14.Width = 50;
@@ -3446,6 +3585,7 @@
             // dataGridViewTextBoxColumn15
             // 
             this.dataGridViewTextBoxColumn15.HeaderText = "B";
+            this.dataGridViewTextBoxColumn15.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
             this.dataGridViewTextBoxColumn15.ReadOnly = true;
             this.dataGridViewTextBoxColumn15.Width = 50;
@@ -3660,6 +3800,7 @@
             this.Fiducials_dataGridView.Location = new System.Drawing.Point(242, 58);
             this.Fiducials_dataGridView.Name = "Fiducials_dataGridView";
             this.Fiducials_dataGridView.RowHeadersVisible = false;
+            this.Fiducials_dataGridView.RowHeadersWidth = 51;
             this.Fiducials_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Fiducials_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.Fiducials_dataGridView.TabIndex = 126;
@@ -3677,45 +3818,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn4.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn4.Name = "dataGridViewComboBoxColumn4";
             this.dataGridViewComboBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn4.Width = 125;
             // 
             // dataGridViewCheckBoxColumn4
             // 
             this.dataGridViewCheckBoxColumn4.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn4.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn4.Name = "dataGridViewCheckBoxColumn4";
             this.dataGridViewCheckBoxColumn4.Width = 50;
             // 
             // dataGridViewTextBoxColumn16
             // 
             this.dataGridViewTextBoxColumn16.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn16.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
             this.dataGridViewTextBoxColumn16.ReadOnly = true;
+            this.dataGridViewTextBoxColumn16.Width = 125;
             // 
             // dataGridViewTextBoxColumn17
             // 
             this.dataGridViewTextBoxColumn17.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn17.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
             this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            this.dataGridViewTextBoxColumn17.Width = 125;
             // 
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.HeaderText = "R";
+            this.dataGridViewTextBoxColumn18.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
             this.dataGridViewTextBoxColumn18.ReadOnly = true;
+            this.dataGridViewTextBoxColumn18.Width = 125;
             // 
             // dataGridViewTextBoxColumn19
             // 
             this.dataGridViewTextBoxColumn19.HeaderText = "G";
+            this.dataGridViewTextBoxColumn19.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
             this.dataGridViewTextBoxColumn19.ReadOnly = true;
+            this.dataGridViewTextBoxColumn19.Width = 125;
             // 
             // dataGridViewTextBoxColumn20
             // 
             this.dataGridViewTextBoxColumn20.HeaderText = "B";
+            this.dataGridViewTextBoxColumn20.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
             this.dataGridViewTextBoxColumn20.ReadOnly = true;
+            this.dataGridViewTextBoxColumn20.Width = 125;
             // 
             // FiducialsMeasure_button
             // 
@@ -3914,6 +4068,7 @@
             this.Display_dataGridView.Location = new System.Drawing.Point(84, 144);
             this.Display_dataGridView.Name = "Display_dataGridView";
             this.Display_dataGridView.RowHeadersVisible = false;
+            this.Display_dataGridView.RowHeadersWidth = 51;
             this.Display_dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.Display_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Display_dataGridView.Size = new System.Drawing.Size(485, 139);
@@ -3933,6 +4088,7 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.Function.MinimumWidth = 6;
             this.Function.Name = "Function";
             this.Function.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Function.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -3941,12 +4097,14 @@
             // Active
             // 
             this.Active.HeaderText = "Enabled";
+            this.Active.MinimumWidth = 6;
             this.Active.Name = "Active";
             this.Active.Width = 50;
             // 
             // Parameter_int
             // 
             this.Parameter_int.HeaderText = "Int1";
+            this.Parameter_int.MinimumWidth = 6;
             this.Parameter_int.Name = "Parameter_int";
             this.Parameter_int.ReadOnly = true;
             this.Parameter_int.Width = 50;
@@ -3954,6 +4112,7 @@
             // Parameter_double
             // 
             this.Parameter_double.HeaderText = "Double1";
+            this.Parameter_double.MinimumWidth = 6;
             this.Parameter_double.Name = "Parameter_double";
             this.Parameter_double.ReadOnly = true;
             this.Parameter_double.Width = 50;
@@ -3961,6 +4120,7 @@
             // Parameter_R
             // 
             this.Parameter_R.HeaderText = "R";
+            this.Parameter_R.MinimumWidth = 6;
             this.Parameter_R.Name = "Parameter_R";
             this.Parameter_R.ReadOnly = true;
             this.Parameter_R.Width = 50;
@@ -3968,6 +4128,7 @@
             // Parameter_G
             // 
             this.Parameter_G.HeaderText = "G";
+            this.Parameter_G.MinimumWidth = 6;
             this.Parameter_G.Name = "Parameter_G";
             this.Parameter_G.ReadOnly = true;
             this.Parameter_G.Width = 50;
@@ -3975,6 +4136,7 @@
             // Parameter_B
             // 
             this.Parameter_B.HeaderText = "B";
+            this.Parameter_B.MinimumWidth = 6;
             this.Parameter_B.Name = "Parameter_B";
             this.Parameter_B.ReadOnly = true;
             this.Parameter_B.Width = 50;
@@ -4032,6 +4194,7 @@
             this.Homing_dataGridView.Location = new System.Drawing.Point(177, 47);
             this.Homing_dataGridView.Name = "Homing_dataGridView";
             this.Homing_dataGridView.RowHeadersVisible = false;
+            this.Homing_dataGridView.RowHeadersWidth = 51;
             this.Homing_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.Homing_dataGridView.Size = new System.Drawing.Size(157, 162);
             this.Homing_dataGridView.TabIndex = 123;
@@ -4049,45 +4212,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn2.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn2.Name = "dataGridViewComboBoxColumn2";
             this.dataGridViewComboBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn2.Width = 125;
             // 
             // dataGridViewCheckBoxColumn2
             // 
             this.dataGridViewCheckBoxColumn2.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn2.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn2.Name = "dataGridViewCheckBoxColumn2";
             this.dataGridViewCheckBoxColumn2.Width = 50;
             // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 125;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 125;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "R";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.HeaderText = "G";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 125;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.HeaderText = "B";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
+            this.dataGridViewTextBoxColumn5.Width = 125;
             // 
             // HomingToHere_button
             // 
@@ -4281,6 +4457,7 @@
             this.UpcamSnapshot_dataGridView.Location = new System.Drawing.Point(168, 47);
             this.UpcamSnapshot_dataGridView.Name = "UpcamSnapshot_dataGridView";
             this.UpcamSnapshot_dataGridView.RowHeadersVisible = false;
+            this.UpcamSnapshot_dataGridView.RowHeadersWidth = 51;
             this.UpcamSnapshot_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.UpcamSnapshot_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.UpcamSnapshot_dataGridView.TabIndex = 126;
@@ -4298,45 +4475,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn10.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn10.Name = "dataGridViewComboBoxColumn10";
             this.dataGridViewComboBoxColumn10.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn10.Width = 125;
             // 
             // dataGridViewCheckBoxColumn10
             // 
             this.dataGridViewCheckBoxColumn10.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn10.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn10.Name = "dataGridViewCheckBoxColumn10";
             this.dataGridViewCheckBoxColumn10.Width = 50;
             // 
             // dataGridViewTextBoxColumn46
             // 
             this.dataGridViewTextBoxColumn46.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn46.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn46.Name = "dataGridViewTextBoxColumn46";
             this.dataGridViewTextBoxColumn46.ReadOnly = true;
+            this.dataGridViewTextBoxColumn46.Width = 125;
             // 
             // dataGridViewTextBoxColumn47
             // 
             this.dataGridViewTextBoxColumn47.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn47.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn47.Name = "dataGridViewTextBoxColumn47";
             this.dataGridViewTextBoxColumn47.ReadOnly = true;
+            this.dataGridViewTextBoxColumn47.Width = 125;
             // 
             // dataGridViewTextBoxColumn48
             // 
             this.dataGridViewTextBoxColumn48.HeaderText = "R";
+            this.dataGridViewTextBoxColumn48.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn48.Name = "dataGridViewTextBoxColumn48";
             this.dataGridViewTextBoxColumn48.ReadOnly = true;
+            this.dataGridViewTextBoxColumn48.Width = 125;
             // 
             // dataGridViewTextBoxColumn49
             // 
             this.dataGridViewTextBoxColumn49.HeaderText = "G";
+            this.dataGridViewTextBoxColumn49.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn49.Name = "dataGridViewTextBoxColumn49";
             this.dataGridViewTextBoxColumn49.ReadOnly = true;
+            this.dataGridViewTextBoxColumn49.Width = 125;
             // 
             // dataGridViewTextBoxColumn50
             // 
             this.dataGridViewTextBoxColumn50.HeaderText = "B";
+            this.dataGridViewTextBoxColumn50.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn50.Name = "dataGridViewTextBoxColumn50";
             this.dataGridViewTextBoxColumn50.ReadOnly = true;
+            this.dataGridViewTextBoxColumn50.Width = 125;
             // 
             // UpCam_SnapshotToDisplay_button
             // 
@@ -4426,6 +4616,7 @@
             this.UpCamComponents_dataGridView.Location = new System.Drawing.Point(209, 44);
             this.UpCamComponents_dataGridView.Name = "UpCamComponents_dataGridView";
             this.UpCamComponents_dataGridView.RowHeadersVisible = false;
+            this.UpCamComponents_dataGridView.RowHeadersWidth = 51;
             this.UpCamComponents_dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.UpCamComponents_dataGridView.Size = new System.Drawing.Size(157, 137);
             this.UpCamComponents_dataGridView.TabIndex = 125;
@@ -4443,45 +4634,58 @@
             "Keep color",
             "Invert",
             "Meas. zoom"});
+            this.dataGridViewComboBoxColumn8.MinimumWidth = 6;
             this.dataGridViewComboBoxColumn8.Name = "dataGridViewComboBoxColumn8";
             this.dataGridViewComboBoxColumn8.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridViewComboBoxColumn8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewComboBoxColumn8.Width = 125;
             // 
             // dataGridViewCheckBoxColumn8
             // 
             this.dataGridViewCheckBoxColumn8.HeaderText = "Enabled";
+            this.dataGridViewCheckBoxColumn8.MinimumWidth = 6;
             this.dataGridViewCheckBoxColumn8.Name = "dataGridViewCheckBoxColumn8";
             this.dataGridViewCheckBoxColumn8.Width = 50;
             // 
             // dataGridViewTextBoxColumn36
             // 
             this.dataGridViewTextBoxColumn36.HeaderText = "Int1";
+            this.dataGridViewTextBoxColumn36.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn36.Name = "dataGridViewTextBoxColumn36";
             this.dataGridViewTextBoxColumn36.ReadOnly = true;
+            this.dataGridViewTextBoxColumn36.Width = 125;
             // 
             // dataGridViewTextBoxColumn37
             // 
             this.dataGridViewTextBoxColumn37.HeaderText = "Double1";
+            this.dataGridViewTextBoxColumn37.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn37.Name = "dataGridViewTextBoxColumn37";
             this.dataGridViewTextBoxColumn37.ReadOnly = true;
+            this.dataGridViewTextBoxColumn37.Width = 125;
             // 
             // dataGridViewTextBoxColumn38
             // 
             this.dataGridViewTextBoxColumn38.HeaderText = "R";
+            this.dataGridViewTextBoxColumn38.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn38.Name = "dataGridViewTextBoxColumn38";
             this.dataGridViewTextBoxColumn38.ReadOnly = true;
+            this.dataGridViewTextBoxColumn38.Width = 125;
             // 
             // dataGridViewTextBoxColumn39
             // 
             this.dataGridViewTextBoxColumn39.HeaderText = "G";
+            this.dataGridViewTextBoxColumn39.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn39.Name = "dataGridViewTextBoxColumn39";
             this.dataGridViewTextBoxColumn39.ReadOnly = true;
+            this.dataGridViewTextBoxColumn39.Width = 125;
             // 
             // dataGridViewTextBoxColumn40
             // 
             this.dataGridViewTextBoxColumn40.HeaderText = "B";
+            this.dataGridViewTextBoxColumn40.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn40.Name = "dataGridViewTextBoxColumn40";
             this.dataGridViewTextBoxColumn40.ReadOnly = true;
+            this.dataGridViewTextBoxColumn40.Width = 125;
             // 
             // UpCamComponentsMeasure_button
             // 
@@ -5269,6 +5473,7 @@
             this.tabPageBasicSetup.Controls.Add(this.BoardSettingsLoad_button);
             this.tabPageBasicSetup.Controls.Add(this.BoardSettingsSave_button);
             this.tabPageBasicSetup.Controls.Add(this.BoardBuiltInSettings_button);
+            this.tabPageBasicSetup.Controls.Add(this.buttonSuctionSensor);
             this.tabPageBasicSetup.Controls.Add(this.AppSettingsLoad_button);
             this.tabPageBasicSetup.Controls.Add(this.AppSettingsSave_button);
             this.tabPageBasicSetup.Controls.Add(this.Board_label);
@@ -5428,6 +5633,16 @@
         "overwritten!");
             this.BoardBuiltInSettings_button.UseVisualStyleBackColor = true;
             this.BoardBuiltInSettings_button.Click += new System.EventHandler(this.BoardBuiltInSettings_button_Click);
+            // 
+            // buttonSuctionSensor
+            // 
+            this.buttonSuctionSensor.Location = new System.Drawing.Point(14, 498);
+            this.buttonSuctionSensor.Name = "buttonSuctionSensor";
+            this.buttonSuctionSensor.Size = new System.Drawing.Size(136, 33);
+            this.buttonSuctionSensor.TabIndex = 108;
+            this.buttonSuctionSensor.Text = "Suction sensor";
+            this.buttonSuctionSensor.UseVisualStyleBackColor = true;
+            this.buttonSuctionSensor.Click += new System.EventHandler(this.buttonSuctionSensor_Click);
             // 
             // AppSettingsLoad_button
             // 
@@ -6293,6 +6508,7 @@
             this.Pump_checkBox.Text = "Pump On";
             this.toolTip1.SetToolTip(this.Pump_checkBox, "Vacuum pump on/off");
             this.Pump_checkBox.UseVisualStyleBackColor = true;
+            this.Pump_checkBox.CheckedChanged += new System.EventHandler(this.Pump_checkBox_CheckedChanged);
             this.Pump_checkBox.Click += new System.EventHandler(this.Pump_checkBox_Click);
             // 
             // TestXY_button
@@ -8366,6 +8582,7 @@
             this.JobData_GridView.Location = new System.Drawing.Point(784, 364);
             this.JobData_GridView.Name = "JobData_GridView";
             this.JobData_GridView.RowHeadersVisible = false;
+            this.JobData_GridView.RowHeadersWidth = 51;
             this.JobData_GridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.JobData_GridView.Size = new System.Drawing.Size(458, 267);
             this.JobData_GridView.TabIndex = 11;
@@ -8376,18 +8593,21 @@
             // ComponentCount
             // 
             this.ComponentCount.HeaderText = "Count";
+            this.ComponentCount.MinimumWidth = 6;
             this.ComponentCount.Name = "ComponentCount";
             this.ComponentCount.Width = 40;
             // 
             // ComponentType
             // 
             this.ComponentType.HeaderText = "Component Type";
+            this.ComponentType.MinimumWidth = 6;
             this.ComponentType.Name = "ComponentType";
             this.ComponentType.Width = 130;
             // 
             // GroupMethod
             // 
             this.GroupMethod.HeaderText = "Method";
+            this.GroupMethod.MinimumWidth = 6;
             this.GroupMethod.Name = "GroupMethod";
             this.GroupMethod.ReadOnly = true;
             this.GroupMethod.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -8396,18 +8616,21 @@
             // MethodParamAllComponents
             // 
             this.MethodParamAllComponents.HeaderText = "Method Parameters";
+            this.MethodParamAllComponents.MinimumWidth = 6;
             this.MethodParamAllComponents.Name = "MethodParamAllComponents";
             this.MethodParamAllComponents.Width = 80;
             // 
             // JobDataNozzle_Column
             // 
             this.JobDataNozzle_Column.HeaderText = "Nozzle";
+            this.JobDataNozzle_Column.MinimumWidth = 6;
             this.JobDataNozzle_Column.Name = "JobDataNozzle_Column";
             this.JobDataNozzle_Column.Width = 50;
             // 
             // ComponentList
             // 
             this.ComponentList.HeaderText = "Components";
+            this.ComponentList.MinimumWidth = 6;
             this.ComponentList.Name = "ComponentList";
             this.ComponentList.Width = 130;
             // 
@@ -8454,11 +8677,14 @@
             // Component
             // 
             this.Component.HeaderText = "Component";
+            this.Component.MinimumWidth = 6;
             this.Component.Name = "Component";
+            this.Component.Width = 125;
             // 
             // Value_Footprint
             // 
             this.Value_Footprint.HeaderText = "Component Type";
+            this.Value_Footprint.MinimumWidth = 6;
             this.Value_Footprint.Name = "Value_Footprint";
             this.Value_Footprint.Width = 130;
             // 
@@ -8466,6 +8692,7 @@
             // 
             this.Placed_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Placed_column.HeaderText = "Placed";
+            this.Placed_column.MinimumWidth = 6;
             this.Placed_column.Name = "Placed_column";
             this.Placed_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Placed_column.Width = 80;
@@ -8473,37 +8700,44 @@
             // X_nominal
             // 
             this.X_nominal.HeaderText = "X, nom.";
+            this.X_nominal.MinimumWidth = 6;
             this.X_nominal.Name = "X_nominal";
             this.X_nominal.Width = 80;
             // 
             // Y_nominal
             // 
             this.Y_nominal.HeaderText = "Y, nom.";
+            this.Y_nominal.MinimumWidth = 6;
             this.Y_nominal.Name = "Y_nominal";
             this.Y_nominal.Width = 80;
             // 
             // Rotation
             // 
             this.Rotation.HeaderText = "Rotation";
+            this.Rotation.MinimumWidth = 6;
             this.Rotation.Name = "Rotation";
             this.Rotation.Width = 70;
             // 
             // X_Machine
             // 
             this.X_Machine.HeaderText = "X, machine";
+            this.X_Machine.MinimumWidth = 6;
             this.X_Machine.Name = "X_Machine";
             this.X_Machine.Width = 80;
             // 
             // Y_machine
             // 
             this.Y_machine.HeaderText = "Y, machine";
+            this.Y_machine.MinimumWidth = 6;
             this.Y_machine.Name = "Y_machine";
             this.Y_machine.Width = 80;
             // 
             // Rotation_machine
             // 
             this.Rotation_machine.HeaderText = "Rotation, machine";
+            this.Rotation_machine.MinimumWidth = 6;
             this.Rotation_machine.Name = "Rotation_machine";
+            this.Rotation_machine.Width = 125;
             // 
             // RunJob_contextMenuStrip
             // 
@@ -8728,6 +8962,7 @@
             // 
             this.dataGridViewTextBoxColumn55.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.dataGridViewTextBoxColumn55.HeaderText = "nozzle";
+            this.dataGridViewTextBoxColumn55.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn55.Name = "dataGridViewTextBoxColumn55";
             this.dataGridViewTextBoxColumn55.ReadOnly = true;
             this.dataGridViewTextBoxColumn55.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -8738,6 +8973,7 @@
             // 
             this.NozzleMinSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.NozzleMinSize_column.HeaderText = "Min. Size";
+            this.NozzleMinSize_column.MinimumWidth = 6;
             this.NozzleMinSize_column.Name = "NozzleMinSize_column";
             this.NozzleMinSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleMinSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -8747,6 +8983,7 @@
             // 
             this.NozzleMaxSize_column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.NozzleMaxSize_column.HeaderText = "Max. Size";
+            this.NozzleMaxSize_column.MinimumWidth = 6;
             this.NozzleMaxSize_column.Name = "NozzleMaxSize_column";
             this.NozzleMaxSize_column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.NozzleMaxSize_column.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -8755,7 +8992,9 @@
             // NozzleAlternative_column
             // 
             this.NozzleAlternative_column.HeaderText = "Use alt. functions";
+            this.NozzleAlternative_column.MinimumWidth = 6;
             this.NozzleAlternative_column.Name = "NozzleAlternative_column";
+            this.NozzleAlternative_column.Width = 125;
             // 
             // NozzleUnload_contextMenuStrip
             // 
@@ -9144,6 +9383,7 @@
             // 
             this.dataGridViewTextBoxColumn51.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.dataGridViewTextBoxColumn51.HeaderText = "nozzle";
+            this.dataGridViewTextBoxColumn51.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn51.Name = "dataGridViewTextBoxColumn51";
             this.dataGridViewTextBoxColumn51.ReadOnly = true;
             this.dataGridViewTextBoxColumn51.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -9154,6 +9394,7 @@
             // 
             this.dataGridViewTextBoxColumn52.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.dataGridViewTextBoxColumn52.HeaderText = "Start X";
+            this.dataGridViewTextBoxColumn52.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn52.Name = "dataGridViewTextBoxColumn52";
             this.dataGridViewTextBoxColumn52.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn52.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -9163,6 +9404,7 @@
             // 
             this.dataGridViewTextBoxColumn53.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.dataGridViewTextBoxColumn53.HeaderText = "Start Y";
+            this.dataGridViewTextBoxColumn53.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn53.Name = "dataGridViewTextBoxColumn53";
             this.dataGridViewTextBoxColumn53.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn53.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -9172,6 +9414,7 @@
             // 
             this.dataGridViewTextBoxColumn54.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.dataGridViewTextBoxColumn54.HeaderText = "Start Z";
+            this.dataGridViewTextBoxColumn54.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn54.Name = "dataGridViewTextBoxColumn54";
             this.dataGridViewTextBoxColumn54.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewTextBoxColumn54.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -9244,6 +9487,7 @@
             // 
             this.NozzleNo_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.NozzleNo_Column.HeaderText = "nozzle";
+            this.NozzleNo_Column.MinimumWidth = 6;
             this.NozzleNo_Column.Name = "NozzleNo_Column";
             this.NozzleNo_Column.ReadOnly = true;
             this.NozzleNo_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -9253,6 +9497,7 @@
             // 
             this.StartX_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.StartX_Column.HeaderText = "Start X";
+            this.StartX_Column.MinimumWidth = 6;
             this.StartX_Column.Name = "StartX_Column";
             this.StartX_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.StartX_Column.Width = 56;
@@ -9261,6 +9506,7 @@
             // 
             this.StartY_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.StartY_Column.HeaderText = "Start Y";
+            this.StartY_Column.MinimumWidth = 6;
             this.StartY_Column.Name = "StartY_Column";
             this.StartY_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.StartY_Column.Width = 56;
@@ -9269,6 +9515,7 @@
             // 
             this.StartZ_Column.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.StartZ_Column.HeaderText = "Start Z";
+            this.StartZ_Column.MinimumWidth = 6;
             this.StartZ_Column.Name = "StartZ_Column";
             this.StartZ_Column.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.StartZ_Column.Width = 56;
@@ -10491,6 +10738,7 @@
         public System.Windows.Forms.CheckBox VacuumInvert_checkBox;
         public System.Windows.Forms.CheckBox PumpInvert_checkBox;
         private System.Windows.Forms.Button Ato0_button;
+        private System.Windows.Forms.Button buttonSuctionSensor;
     }
 }
 

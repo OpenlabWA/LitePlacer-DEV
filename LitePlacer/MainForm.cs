@@ -15112,7 +15112,7 @@ namespace LitePlacer
             Setting.Placement_FiducialConfirmation = FiducialManConfirmation_checkBox.Checked;
         }
 
-        private void AppSettingsSave_button_Click(object sender, EventArgs e)
+        public void AppSettingsSave_button_Click(object sender, EventArgs e)
         {
             string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
             int i = path.LastIndexOf('\\');
@@ -15592,7 +15592,15 @@ namespace LitePlacer
             CNC_RawWrite("{\"gc\":\"G28.3 A0\"}");
         }
 
+        private void buttonSuctionSensor_Click(object sender, EventArgs e)
+        {
+            new FrmSuctionSensor(this).Show();
+        }
 
+        private void Pump_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }	// end of: 	public partial class FormMain : Form
 
 

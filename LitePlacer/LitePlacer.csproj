@@ -152,6 +152,12 @@
     <Compile Include="BoardSettings.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="CNC.cs" />
+    <Compile Include="FrmSuctionSensor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSuctionSensor.Designer.cs">
+      <DependentUpon>FrmSuctionSensor.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +182,7 @@
     <Compile Include="SerialComm.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Shapes.cs" />
+    <Compile Include="SuctionSensor.cs" />
     <Compile Include="TapeEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +196,9 @@
     <Compile Include="TapeSelectionForm.Designer.cs">
       <DependentUpon>TapeSelectionForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FrmSuctionSensor.resx">
+      <DependentUpon>FrmSuctionSensor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>

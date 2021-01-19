@@ -155,6 +155,10 @@ namespace LitePlacer
         public int DownCam_DesiredY = 480;
         public int UpCam_DesiredX = 640;
         public int UpCam_DesiredY = 480;
+
+
+        public string SuctionSensorPressureSettings { get; set; }
+
     }
 
     // =================================================================================
