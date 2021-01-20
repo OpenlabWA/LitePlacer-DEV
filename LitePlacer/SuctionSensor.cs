@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LitePlacer
 {
@@ -22,27 +23,36 @@ namespace LitePlacer
             InitialisedOk,
             NozzleNotBlocked,
             NozzleBlocked,
+            Cancel,
         }
 
 
+
         //errors
-        public const string PickupNotCalled = "SuctionSensor.cs: AttemptedPartPickup was not called prior to PickupComplete!";
-        public const string SuctionSensorNoPort = "SuctionSensor.cs: Suction sensor is enabled but can't find serial port or it failed to open.";
-        public const string SuctionSensorNoSettings = "SuctionSensor.cs: Suction sensor is enabled but has no/missing pressure settings";
-        public const string SuctionSensorNozzleBlocked = "SuctionSensor.cs: Check nozzle, it might be blocked.";
-        public const string SuctionSensorRetryExceeded = "SuctionSensor.cs: Exceeded retry pickup count ({0})";
-        public const string SuctionSensorUnknownError = "SuctionSensor.cs: Unknown Error!! Err:  {0}";
-        public const string SuctionSensorCantBlockCheckComponentPicked = "SuctionSensor.cs: Can't perform blocked nozzle check as component has been picked up";
-        public const string SuctionSensorCommsDropout = "SuctionSensor.cs: Communications lost to sunction sensor!";
+        public const string Prefix = "SuctionSensor.cs ";
+        public const string PickupNotCalled = Prefix + "AttemptedPartPickup was not called prior to PickupComplete!";
+        public const string SuctionSensorNoPort = Prefix + "Suction sensor is enabled but can't find serial port or it failed to open.";
+        public const string SuctionSensorNoSettings = Prefix + "Suction sensor is enabled but has no/missing pressure settings";
+        public const string SuctionSensorNozzleBlocked = Prefix + "Check nozzle, it might be blocked.";
+        public const string SuctionSensorRetryExceeded = Prefix + "Exceeded retry pickup count ({0})";
+        public const string SuctionSensorRetry = Prefix + "Failed to pickup part, retrying {0} of {1} {2}";
+        public const string SuctionSensorUnknownError = Prefix + "Unknown Error!! Err:  {0}";
+        public const string SuctionSensorCantBlockCheckComponentPicked = Prefix + "Can't perform blocked nozzle check as component has been picked up";
+        public const string SuctionSensorCommsDropout = Prefix + "Communications lost to sunction sensor!";
+        public const string SuctionSensorNoNozzle = Prefix + "No nozzle found!";
+        public const string SuctionSensorCouldntGetComponentPressure = Prefix + "(PickupComplete) Couldn't get GetPickedupComponentPressure";
+        public const string SuctionSensorDroppedPart = Prefix + "Component might have been dropped";
+
 
         //notifications
-        public const string SuctionSensorNotEnabled = "SuctionSensor.cs: Suction sensor not enabled.";
-        public const string SuctionSensorInitialisedOk = "SuctionSensor.cs: Suction sensor initialised OK";
-        public const string SuctionSensorShutdown = "SuctionSensor.cs: Suction sensor shutdown";
+        public const string SuctionSensorNotEnabled = Prefix + "Suction sensor not enabled.";
+        public const string SuctionSensorInitialisedOk = Prefix + "Suction sensor initialised OK";
+        public const string SuctionSensorShutdown = Prefix + "Suction sensor shutdown";
 
-        public string MessageForUser { get; private set; }      
+        public string MessageForUser { get; private set; }
+
         public string ConnectionState { get; private set; } = "Disconnected";
-        public bool Connected => ConnectionState == "Connected!";
+        public bool Connected => port != null && port.IsOpen;
 
         SuctionSensorPressureSettings _PressureSettings = null;
         //load settings from main if they don't exist.
@@ -129,6 +139,7 @@ namespace LitePlacer
                 PressureSettings.NozzlePressureSettings.Count < nozzlenumber ||
                 PressureSettings.NozzlePressureSettings[nozzlenumber] == null)
             {
+                _Main.DisplayText("SuctionSensor:GetCurrentNozzlePressure Nozzle setting not found", System.Drawing.KnownColor.Red);
                 return null;
             }
             return PressureSettings.NozzlePressureSettings[nozzlenumber];
@@ -140,7 +151,7 @@ namespace LitePlacer
         /// 470 + ((840 - 470) * 0.8)  = 766
         /// So, if the pressure is ABOVE 766, then the nozzle is NOT blocked.
         /// </summary>
-        int? GetBlockedNozzlePressure(int nozzlePressure)
+        public int? GetBlockedNozzlePressure(int nozzlePressure)
         {
             //Get our pressure settings.
             var ps = PressureSettings;
@@ -164,7 +175,7 @@ namespace LitePlacer
         /// 470 + ((840 - 470) * 0.4)  = 618
         /// So, if the pressure gets BELOW 618, then we will register that the component has been picked up.
         /// </summary>
-        int? GetPickedupComponentPressure(int nozzlePressure)
+        public int? GetPickedupComponentPressure(int nozzlePressure)
         {
             //Get our pressure settings.
             var ps = PressureSettings;
@@ -176,7 +187,6 @@ namespace LitePlacer
                 _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
                 return null;
             }
-
 
             var sp = (int)(PressureSettings.FullSuctionPressure +
                 ((nozzlePressure - PressureSettings.FullSuctionPressure) * PressureSettings.PickedUpComponentFactor));
@@ -206,8 +216,6 @@ namespace LitePlacer
                 return ESuctionSensorState.InitialisedOk;
             }
             //Get our serial port.
-
-       
 
             if (string.IsNullOrEmpty(PressureSettings.SuctionSensorPort))
             {
@@ -276,7 +284,7 @@ namespace LitePlacer
             var sp = (SerialPort)sender;
             if (sp.BytesToRead < 5) return;
             //make sure we don't overflow.
-            if (_RxBufferPos + sp.BytesToRead > _RxBuffer.Length-10) _RxBufferPos = 0;
+            if (_RxBufferPos + sp.BytesToRead > _RxBuffer.Length - 10) _RxBufferPos = 0;
             _RxBufferPos += sp.Read(_RxBuffer, _RxBufferPos, sp.BytesToRead);
             //Find our \r\n
             var str = UTF8Encoding.UTF8.GetString(_RxBuffer, 0, _RxBufferPos);
@@ -324,8 +332,19 @@ namespace LitePlacer
                 //see if we're still disconnected, if so, try reconnect.
                 if (!ss.CheckTimeOutOk()) ss.Init();
             }
+            //check if we've picked up a part, we'll monitor to ensure it hasn't been dropped.
+            else if (ss.PressureAtPickup > 0)
+            {
+                var pressurediff = ss.ComponentPickedupMinPressure * SuctionSensorPressureSettings.DropDetectionFactor;
+                if (ss.SuctionPressure - ss.PressureAtPickup > pressurediff)
+                {
+                    //Show the error message.
+                    ss.ShowError(SuctionSensorDroppedPart);
+                    ss.ClearPickup();
+                }
+            }
             //restart the timer.
-            ss._TmrPeriodic.Change(ss.TimerTickRate, Timeout.Infinite);
+            ss._TmrPeriodic?.Change(ss.TimerTickRate, Timeout.Infinite);
         }
 
         /// <summary>
@@ -334,6 +353,7 @@ namespace LitePlacer
         /// </summary>
         public void AttemptedPartPickup()
         {
+            ClearPickup();
             AttemptedPickupTime = DateTime.UtcNow;
         }
 
@@ -346,52 +366,78 @@ namespace LitePlacer
         {
             try
             {
+                //if suction sensor isn't enabled, then just return an ok result.
+                if (!PressureSettings.SuctionSensorEnable)
+                    return ESuctionSensorState.PickupOk;
                 if (AttemptedPickupTime == null)
                 {
                     MessageForUser = PickupNotCalled;
-                    return ESuctionSensorState.RequireOkStopUserConfirmation;
+                    _Main.DisplayText(MessageForUser);
+                    return ESuctionSensorState.Cancel;
+                }
+                //Make sure we've not lost comms or something.
+                if (CommsTimeout || !Connected)
+                {
+                    ShowCommsTimeoutError();
+                    return ESuctionSensorState.Cancel;
                 }
                 //Wait for suction delay to evacuate air from tube.
                 //Generally the suction delay time in basic settings is enough.
                 while (DateTime.UtcNow < AttemptedPickupTime.Value.AddMilliseconds(PressureSettings.CurrentPickupPressureDelay)) Thread.Sleep(50);
-                AttemptedPickupTime = null;
                 PressureAtPickup = GetSetSuctionPressure();
                 //Get our nozzle suction value.
                 var nozz = _Main.Setting.Nozzles_current;
                 //No nozzle??
-                if (nozz == 0) return ESuctionSensorState.PickupOk;
+                if (nozz == 0)
+                {
+                    MessageForUser = SuctionSensorNoNozzle;
+                    _Main.DisplayText(MessageForUser);
+                    return ESuctionSensorState.Cancel;
+                }
 
                 var NozzlePressure = GetCurrentNozzlePressure();
                 if (NozzlePressure == null)
                 {
                     MessageForUser = SuctionSensorNoSettings;
                     _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
-                    return ESuctionSensorState.RequireOkStopUserConfirmation;
+                    //Stop the job, but wait for user confirmation.
+                    ShowError(MessageForUser);
+                    return ESuctionSensorState.Cancel;
                 }
+
                 /// FS + ((NP - FS) * HasComponentFactor) = setpoint
                 var pres = GetPickedupComponentPressure(NozzlePressure.Value);
                 if (pres == null)
                 {
-                    MessageForUser = SuctionSensorNoSettings;
-                    _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
-                    return ESuctionSensorState.RequireOkStopUserConfirmation;
+                    ShowError(SuctionSensorCouldntGetComponentPressure);
+                    return ESuctionSensorState.Cancel;
                 }
-
                 ComponentPickedupMinPressure = pres.Value;
+
+                //Ok all good!
                 if (PressureAtPickup < ComponentPickedupMinPressure)
-                {
-                    _RetryCount = 0;
                     return ESuctionSensorState.PickupOk;
-                }
+
                 if (_RetryCount > PressureSettings.PickupRetryCount)
                 {
                     MessageForUser = string.Format(SuctionSensorRetryExceeded, _RetryCount);
                     _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
-                    PressureAtPickup = 0;
-                    ComponentPickedupMinPressure = 0;
-                    return ESuctionSensorState.RequireOkStopUserConfirmation;
+                    if (PressureSettings.BeepOnPickupRetryExceeded)
+                        PlayBeep();
+                    //See if the user wants to try again, or give up..
+                    //Show a user confirmation, otherwise we can just return the response.
+                    if (_Main.ShowMessageBox(MessageForUser, "Suction sensor error", System.Windows.Forms.MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)
+                    {
+                        ClearPickup();
+                        return ESuctionSensorState.Cancel;
+                    }
                 }
+                else if (PressureSettings.BeepOnPickupFail)
+                        PlayBeep();
+
                 _RetryCount++;
+                var incrementing = PressureSettings.SuctionSensorIncrementEachRetry ? ", incrementing component" : "";
+                _Main.DisplayText(string.Format(SuctionSensorRetry, _RetryCount, PressureSettings.PickupRetryCount, incrementing), System.Drawing.KnownColor.Red);
                 if (PressureSettings.SuctionSensorIncrementEachRetry) return ESuctionSensorState.RetryAndIncrementPickup;
                 else return ESuctionSensorState.RetryPickup;
             }
@@ -400,9 +446,41 @@ namespace LitePlacer
                 MessageForUser = string.Format(SuctionSensorUnknownError, ex.Message);
             }
             _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
+            ShowError(MessageForUser);
+            return ESuctionSensorState.Cancel;
+        }
+
+        void ShowError(string msg, string header = "Suction sensor error")
+        {
+            _Main.ShowMessageBox(msg, header, System.Windows.Forms.MessageBoxButtons.OK);
+        }
+
+        ESuctionSensorState ShowCommsTimeoutError()
+        {
+            if (_Main.ShowMessageBox($"Suction sensor {(CommsTimeout ? "comms timeout" : "not connected")}, click retry to attempt to reconnect",
+                "Suction sensor error", System.Windows.Forms.MessageBoxButtons.RetryCancel) != System.Windows.Forms.DialogResult.Retry)
+                return ESuctionSensorState.Cancel;
+
+            if (!CommsTimeout) Init();
+            //wait a little and try to reconnect.
+            for (int i = 0; i < 4; i++)
+            {
+                Thread.Sleep(1500);
+                System.Windows.Forms.Application.DoEvents();
+                if (!CommsTimeout && Connected) break;
+            }
+            //failed to reconnect.
+            if (CommsTimeout || !Connected)
+                ShowCommsTimeoutError();
+            return ESuctionSensorState.Cancel;
+        }
+
+        public void ClearPickup()
+        {
+            _RetryCount = 0;
+            AttemptedPickupTime = null;
             PressureAtPickup = 0;
             ComponentPickedupMinPressure = 0;
-            return ESuctionSensorState.RequireOkStopUserConfirmation;
         }
 
         /// <summary>
@@ -412,8 +490,7 @@ namespace LitePlacer
         {
             //Great!
             //Clear our pickup pressure so we stop checking.
-            PressureAtPickup = 0;
-            ComponentPickedupMinPressure = 0;
+            ClearPickup();
         }
 
         /// <summary>
@@ -421,18 +498,19 @@ namespace LitePlacer
         /// We monitor the pressure and make sure we don't have a blocked nozzle / component stuck to it.
         /// If we smash a small nozzle into solder paste or something, we can gunk it up.
         /// </summary>
-        public ESuctionSensorState BlockedNozzleCheck()
+        ESuctionSensorState PrivateBlockedNozzleCheck()
         {
             //don't perform a check if the user has disabled it.
             if (PressureSettings.NozzleBlockedFactor == 0)
                 return ESuctionSensorState.NozzleNotBlocked;
 
             //Already have a component picked up.
-            if (PressureAtPickup != 0)
+            if (PressureAtPickup > 0)
             {
                 //Bad pressure.
                 MessageForUser = SuctionSensorCantBlockCheckComponentPicked;
                 _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
+                ShowError(MessageForUser);
                 return ESuctionSensorState.RequireOkStopUserConfirmation;
             }
 
@@ -443,7 +521,7 @@ namespace LitePlacer
             {
                 //Bad pressure.
                 MessageForUser = SuctionSensorNoSettings;
-                _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
+                ShowError(MessageForUser);
                 return ESuctionSensorState.RequireOkStopUserConfirmation;
             }
             var BlockedPressure = GetBlockedNozzlePressure(NozzlePressure.Value);
@@ -451,11 +529,37 @@ namespace LitePlacer
             {
                 //Bad pressure.
                 MessageForUser = SuctionSensorNoSettings;
-                _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
+                ShowError(MessageForUser);
                 return ESuctionSensorState.RequireOkStopUserConfirmation;
             }
-            if (Pressure < BlockedPressure) return ESuctionSensorState.NozzleBlocked;
-            return ESuctionSensorState.NozzleNotBlocked;
+
+            if (Pressure > BlockedPressure) return ESuctionSensorState.NozzleNotBlocked;
+            _Main.DisplayText(SuctionSensorNozzleBlocked, System.Drawing.KnownColor.Red);
+            return ESuctionSensorState.NozzleBlocked;
+        }
+
+        public void BlockedNozzleCheck()
+        {
+            //Make sure vacuum is on.
+            _Main.Cnc.VacuumOn(true);
+            if (PrivateBlockedNozzleCheck() != ESuctionSensorState.NozzleBlocked) return;
+
+            //Wait a little first, then check again...
+            Thread.Sleep(_Main.Setting.General_PickupVacuumTime);
+            if (PrivateBlockedNozzleCheck() != ESuctionSensorState.NozzleBlocked) return;
+
+            //log it and beep if required.
+            MessageForUser = SuctionSensorNozzleBlocked;
+            _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
+            if (PressureSettings.BeepOnBlockedNozzle)
+                PlayBeep();
+
+            return;
+        }
+
+        void PlayBeep()
+        {
+            System.Media.SystemSounds.Beep.Play();
         }
     }
 
@@ -485,7 +589,10 @@ namespace LitePlacer
             return sets;
         }
 
-
+        /// <summary>
+        /// If we read more than a xx% difference between picking up the part and placing it, we'll presume we've dropped it.
+        /// </summary>
+        public const double DropDetectionFactor = 0.1;
         public const int MinPressure = 200;
         public const int MaxPressure = 1600;
 
@@ -539,6 +646,19 @@ namespace LitePlacer
         /// So, if the pressure is ABOVE 766, then the nozzle is NOT blocked.
         /// </summary>
         public double NozzleBlockedFactor { get; set; } = 0.8;
+
+        /// <summary>
+        /// Beep every time we have a pickup fail.
+        /// </summary>
+        public bool BeepOnPickupFail { get; set; } = true;
+        /// <summary>
+        /// If suspected blocked nozzle, give a beep.
+        /// </summary>
+        public bool BeepOnBlockedNozzle { get; set; } = true;
+        /// <summary>
+        /// too many pickup fails, do a final beep.
+        /// </summary>
+        public bool BeepOnPickupRetryExceeded { get; set; } = true;
 
     }
 }

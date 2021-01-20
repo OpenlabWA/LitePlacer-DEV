@@ -403,6 +403,11 @@ namespace LitePlacer
             Pump_checkBox.Checked = false;
             Vacuum_checkBox.Checked = false;
 
+            //initialise our suction sensor if required.
+            if(SuctionSensor.GetInstance(this).Init()!= SuctionSensor.ESuctionSensorState.InitialisedOk)
+                ShowMessageBox(SuctionSensor.GetInstance(this).MessageForUser, "Suction sensor error", MessageBoxButtons.OK);
+
+
             Cnc.Connect(Setting.CNC_SerialPort);  // moved to here, as this can raise error condition, needing the form up
             UpdateCncConnectionStatus();
 
@@ -4404,8 +4409,10 @@ namespace LitePlacer
 
         private void buttonConnectSerial_Click(object sender, EventArgs e)
         {
+            
             if (comboBoxSerialPorts.SelectedItem == null)
             {
+                
                 return;  // no ports
             };
 
@@ -4423,6 +4430,7 @@ namespace LitePlacer
                         Application.DoEvents();
                     }
                 }
+                
                 // reconnect, attempt to clear the error
                 if (Cnc.Connect(comboBoxSerialPorts.SelectedItem.ToString()))
                 {
@@ -8674,6 +8682,52 @@ namespace LitePlacer
 
         // =================================================================================
         // PickUpThis_m(): Actual pickup, assumes Nozzle is on top of the part
+        
+        private SuctionSensor.ESuctionSensorState PickUpThisWithSuctionSensor_m(int TapeNumber)
+        {
+            string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value.ToString();
+            double Zpickup;
+            //It might still be on if we're trying to pick up again.
+            Cnc.VacuumOff();
+            if (Z_str == "--")
+            {
+                DisplayText("PickUpPart_m(): Probing pickup Z", KnownColor.Blue);
+                if (!Nozzle_ProbeDown_m()) return  SuctionSensor.ESuctionSensorState.Cancel;
+
+                Zpickup = Cnc.CurrentZ - Setting.General_PlacementBackOff + Setting.Placement_Depth;
+                Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value = Zpickup.ToString();
+                DisplayText("PickUpPart_m(): Probed Z= " + Cnc.CurrentZ.ToString());
+            }
+            else
+            {
+                if (!double.TryParse(Z_str.Replace(',', '.'), out Zpickup))
+                {
+                    ShowMessageBox(
+                        "Bad pickup Z data at Tape #" + TapeNumber.ToString(),
+                        "Sloppy programmer error",
+                        MessageBoxButtons.OK);
+                    return SuctionSensor.ESuctionSensorState.Cancel; 
+                };
+                DisplayText("PickUpPart_m(): Part pickup, Z" + Zpickup.ToString(), KnownColor.Blue);
+                if (!CNC_Z_m(Zpickup))
+                {
+                    return SuctionSensor.ESuctionSensorState.Cancel;
+                }
+            }
+            var ss = SuctionSensor.GetInstance(this);
+            Cnc.VacuumOn();
+            //Tell the suction sensor, we've attempted to pick up the part.
+            ss.AttemptedPartPickup();
+            DisplayText("PickUpPart_m(): Nozzle up");
+            if (!CNC_Z_m(0))
+            {
+                //Finishes things off.
+                ss.ClearPickup();
+                return SuctionSensor.ESuctionSensorState.Cancel;
+            }
+            return ss.PickupComplete();            
+        }
+
         private bool PickUpThis_m(int TapeNumber)
         {
             string Z_str = Tapes_dataGridView.Rows[TapeNumber].Cells["Z_Pickup_Column"].Value.ToString();
@@ -8706,6 +8760,7 @@ namespace LitePlacer
                     return false;
                 }
             }
+
             Cnc.VacuumOn();
             DisplayText("PickUpPart_m(): Nozzle up");
             if (!CNC_Z_m(0))
@@ -8719,16 +8774,11 @@ namespace LitePlacer
         public bool PickUpPartFast_m(int TapeNum)
         {
             if (UseCoordinatesDirectly(TapeNum))
-            {
                 return (PickUpPartWithDirectCoordinates_m(TapeNum));
-            }
 
             if (!Tapes.FastParametersOk)
             {
-                ShowMessageBox(
-                    "FastParameters not ok",
-                    "Sloppy programmer error",
-                    MessageBoxButtons.OK);
+                ShowMessageBox("FastParameters not ok", "Sloppy programmer error", MessageBoxButtons.OK);
                 return false;
             }
 
@@ -8736,44 +8786,50 @@ namespace LitePlacer
             double PartX = 0.0;
             double PartY = 0.0;
             double A = 0.0;
+                      
 
-            // GetPartLocationFromHolePosition_m calculates A correctly, but we have already figured out X and Y
-            if (!Tapes.GetPartLocationFromHolePosition_m(TapeNum, Tapes.FastXpos, Tapes.FastYpos, out PartX, out PartY, out A))
+            SuctionSensor.ESuctionSensorState state;
+            bool done = false;
+            bool advance = false;
+            while (!done)
             {
-                ShowMessageBox(
-                    "Can't find tape hole",
-                    "Tape error",
-                    MessageBoxButtons.OK
-                );
-            }
-
-            // Now, PartX, PartY, A tell the position of the part.
-            if (!Nozzle.Move_m(PartX, PartY, A))
-            {
-                return false;
-            }
-            if (!PickUpThis_m(TapeNum))
-            {
-                return false;
-            }
-
-            if (!Tapes.IncrementTape_Fast_m(TapeNum))
-            {
-                return false;
-            }
-
-            if (AbortPlacement)
-            {
-                if (!AbortPlacementShown)
-                {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
+                // GetPartLocationFromHolePosition_m calculates A correctly, but we have already figured out X and Y
+                if (!Tapes.GetPartLocationFromHolePosition_m(TapeNum, Tapes.FastXpos, Tapes.FastYpos, out PartX, out PartY, out A))
+                { 
+                    ShowMessageBox("Can't find tape hole", "Tape error", MessageBoxButtons.OK);
+                    return false;
                 }
-                AbortPlacement = false;
-                return false;
+
+                // Now, PartX, PartY, A tell the position of the part.
+                if (!Nozzle.Move_m(PartX, PartY, A))
+                    return false;
+                
+                state = PickUpThisWithSuctionSensor_m(TapeNum);
+
+                if (state == SuctionSensor.ESuctionSensorState.Cancel)
+                    return false;
+                else if (state == SuctionSensor.ESuctionSensorState.RetryPickup)
+                    continue;
+                //increment to the next component...
+                else if (state == SuctionSensor.ESuctionSensorState.RetryAndIncrementPickup)
+                    advance = true;
+                //increment to the next component and make like a tree.
+                else if (state == SuctionSensor.ESuctionSensorState.PickupOk)
+                    advance = done = true;
+
+                if (advance && !Tapes.IncrementTape_Fast_m(TapeNum))
+                    return false;
+
+                if (AbortPlacement)
+                {
+                    if (!AbortPlacementShown)
+                    {
+                        AbortPlacementShown = true;
+                        ShowMessageBox("Operation aborted", "Operation aborted", MessageBoxButtons.OK);
+                    }
+                    AbortPlacement = false;
+                    return false;
+                }
             }
             return true;
         }
@@ -8783,9 +8839,7 @@ namespace LitePlacer
         private bool PickUpPartWithHoleMeasurement_m(int TapeNumber)
         {
             if (UseCoordinatesDirectly(TapeNumber))
-            {
                 return (PickUpPartWithDirectCoordinates_m(TapeNumber));
-            }
 
             // If this succeeds, we update next hole location at the end, but these values are measured at start
             double HoleX = 0;
@@ -8793,34 +8847,42 @@ namespace LitePlacer
             DisplayText("PickUpPart_m(), tape no: " + TapeNumber.ToString());
             // Go to part location:
             Cnc.VacuumOff();
-            if (!Tapes.GotoNextPartByMeasurement_m(TapeNumber, out HoleX, out HoleY))
-            {
-                return false;
-            }
-            // Pick it up:
-            if (!PickUpThis_m(TapeNumber))
-            {
-                return false;
-            }
 
-            if (!Tapes.IncrementTape(TapeNumber, HoleX, HoleY))
+            SuctionSensor.ESuctionSensorState state;
+            bool done = false;
+            bool advance = false;
+            while (!done)
             {
-                return false;
-            }
+                if (!Tapes.GotoNextPartByMeasurement_m(TapeNumber, out HoleX, out HoleY))
+                    return false;
 
-            if (AbortPlacement)
-            {
-                if (!AbortPlacementShown)
+                state = PickUpThisWithSuctionSensor_m(TapeNumber);
+
+                if (state == SuctionSensor.ESuctionSensorState.Cancel)
+                    return false;
+                else if (state == SuctionSensor.ESuctionSensorState.RetryPickup)
+                    continue;
+                //increment to the next component...
+                else if (state == SuctionSensor.ESuctionSensorState.RetryAndIncrementPickup)
+                    advance = true;
+                //increment to the next component and make like a tree.
+                else if (state == SuctionSensor.ESuctionSensorState.PickupOk)
+                    advance = done = true;
+
+                if (advance && !Tapes.IncrementTape(TapeNumber, HoleX, HoleY))
+                    return false;
+
+                if (AbortPlacement)
                 {
-                    AbortPlacementShown = true;
-                    ShowMessageBox(
-                               "Operation aborted",
-                               "Operation aborted",
-                               MessageBoxButtons.OK);
+                    if (!AbortPlacementShown)
+                    {
+                        AbortPlacementShown = true;
+                        ShowMessageBox("Operation aborted", "Operation aborted", MessageBoxButtons.OK);
+                    }
+                    AbortPlacement = false;
+                    return false;
                 }
-                AbortPlacement = false;
-                return false;
-            }
+            } 
             return true;
         }
 
@@ -8941,33 +9003,47 @@ namespace LitePlacer
 
         private bool PickUpPartWithDirectCoordinates_m(int TapeNum)
         {
-            double X;
-            double Y;
-            double A;
+            double X, Y, A;
             bool increment;
-            if (!FindPartWithDirectCoordinates_m(TapeNum, out X, out Y, out A, out increment))
+            SuctionSensor.ESuctionSensorState state;
+            //advance our position.
+            var advance = false;
+            var done = false;
+            while (!done)
             {
-                return false;
-            }
-            DisplayText("PickUpPartWithDirectCoordinates_m(), tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString()
-                + ", X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000") + ", A: " + A.ToString("0.000"));
+                //Find our next part..
+                if (!FindPartWithDirectCoordinates_m(TapeNum, out X, out Y, out A, out increment))
+                    return false;
+                //update log
+                DisplayText("PickUpPartWithDirectCoordinates_m(), tape " + Tapes_dataGridView.Rows[TapeNum].Cells["Id_Column"].Value.ToString()
+                    + ", X: " + X.ToString("0.000") + ", Y: " + Y.ToString("0.000") + ", A: " + A.ToString("0.000"));
 
-            if (!Nozzle.Move_m(X, Y, A))
-            {
-                return false;
-            }
-            if (!PickUpThis_m(TapeNum))
-            {
-                return false;
-            }
+                //move to position...
+                if (!Nozzle.Move_m(X, Y, A))
+                    return false;
 
-            if (increment)
-            {
-                int i;
-                int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out i);  // we know it parses
-                i++;
-                Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value = i.ToString();
+                state = PickUpThisWithSuctionSensor_m(TapeNum);
+
+                if (state == SuctionSensor.ESuctionSensorState.Cancel)
+                    return false;
+                else if (state == SuctionSensor.ESuctionSensorState.RetryPickup)
+                    continue;
+                //increment to the next component...
+                else if (state == SuctionSensor.ESuctionSensorState.RetryAndIncrementPickup)
+                    advance = true;
+                else if (state == SuctionSensor.ESuctionSensorState.PickupOk)
+                    done = advance = true;
+
+                //increment the position if required...
+                if (advance && increment)
+                {
+                    int i;
+                    int.TryParse(Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value.ToString(), out i);  // we know it parses
+                    i++;
+                    Tapes_dataGridView.Rows[TapeNum].Cells["NextPart_Column"].Value = i.ToString();
+                }
             }
+            
             return true;
         }
 
@@ -9082,6 +9158,7 @@ namespace LitePlacer
 
             if (!CNC_Z_m(Setting.General_ZtoPCB - distance2pcb))
             {
+                SuctionSensor.GetInstance(this).PlaceComplete();
                 return false;
             }
 
@@ -9483,6 +9560,12 @@ namespace LitePlacer
                 return false;
             }
 
+            //We'll say that we've finished placing the part here.
+            //Up until now, we have been checking to ensure that we haven't dropped the part.
+            //Technically we should wait until we're at the bottom of placing the part, but then we'd need to modify each method, so for now
+            //we'll just take a shortcut.
+            SuctionSensor.GetInstance(this).PlaceComplete();
+
             // Place it:
             if (AbortPlacement)
             {
@@ -9554,6 +9637,9 @@ namespace LitePlacer
                 AbortPlacement = false;
                 return false;
             }
+            //do a blocked nozzle check.
+            //If we 'placed' the part, but we actually nosedived into solder paste or something, we'll just do a check here.
+            SuctionSensor.GetInstance(this).BlockedNozzleCheck();            
             return true;
         }
 
@@ -12203,12 +12289,29 @@ namespace LitePlacer
                 Cnc.PumpOff_NoWorkaround();
                 return;
             }
-            if (!Nozzle_ProbeDown_m())
+            
+            var ss = SuctionSensor.GetInstance(this);
+
+            while(true)
             {
-                return;
+                Cnc.VacuumOff();
+
+                if (!Nozzle_ProbeDown_m())
+                    return;
+                Cnc.VacuumOn();
+
+                ss.AttemptedPartPickup();
+                CNC_Z_m(0);  // pick up
+                var state = ss.PickupComplete();
+                if (state == SuctionSensor.ESuctionSensorState.RetryPickup ||
+                    state == SuctionSensor.ESuctionSensorState.RetryAndIncrementPickup)
+                    continue;
+                else if (state == SuctionSensor.ESuctionSensorState.PickupOk)
+                    break;
+                //error....
+                else return;
             }
-            Cnc.VacuumOn();
-            CNC_Z_m(0);  // pick up
+
             CNC_XY_m(Xmark, Ymark);
         }
 

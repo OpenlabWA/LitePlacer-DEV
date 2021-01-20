@@ -19,7 +19,7 @@ namespace LitePlacer
         static FormMain MainForm;
         private SerialComm Com;
 
-        public enum ControlBoardType { TinyG, qQuintic, other, unknown};
+        public enum ControlBoardType { TinyG, qQuintic, other, unknown };
         public ControlBoardType Controlboard = ControlBoardType.unknown;
 
         static ManualResetEventSlim _readyEvent = new ManualResetEventSlim(false);
@@ -158,8 +158,8 @@ namespace LitePlacer
 
         public static double SquareCorrection { get; set; }
 
-		private static double CurrX;
-		private static double _trueX;
+        private static double CurrX;
+        private static double _trueX;
 
         public double TrueX
         {
@@ -173,7 +173,7 @@ namespace LitePlacer
             }
         }
 
-		public double CurrentX
+        public double CurrentX
         {
             get
             {
@@ -187,8 +187,8 @@ namespace LitePlacer
 
         public static void setCurrX(double x)
         {
-			_trueX = x;
-			CurrX = x - CurrY * SquareCorrection;
+            _trueX = x;
+            CurrX = x - CurrY * SquareCorrection;
             //MainForm.DisplayText("CNC.setCurrX: x= " + x.ToString() + ", CurrX= " + CurrX.ToString() + ", CurrY= " + CurrY.ToString());
         }
 
@@ -202,14 +202,14 @@ namespace LitePlacer
             set
             {
                 CurrY = value;
-			}
+            }
         }
         public static void setCurrY(double y)
         {
             CurrY = y;
-			CurrX = _trueX - CurrY * SquareCorrection;
-			//MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
-		}
+            CurrX = _trueX - CurrY * SquareCorrection;
+            //MainForm.DisplayText("CNC.setCurrY: "+ y.ToString()+ " CurrX= " + CurrX.ToString());
+        }
 
         private static double CurrZ;
         public double CurrentZ
@@ -300,8 +300,8 @@ namespace LitePlacer
                 _readyEvent.Set();
                 return;   // already there
             }
-			X = X + SquareCorrection * Y;
-			X = Math.Round(X, 3);
+            X = X + SquareCorrection * Y;
+            X = Math.Round(X, 3);
             if ((dX < 1) && (dY < 1))
             {
                 // Small move
@@ -369,7 +369,7 @@ namespace LitePlacer
             }
             else if ((!CompensateXY) && (CompensateA))
             {
-                XYA_move(X, Y, Am-SlackCompensationDistanceA);
+                XYA_move(X, Y, Am - SlackCompensationDistanceA);
                 A_move(Am);
             }
             else
@@ -399,14 +399,14 @@ namespace LitePlacer
                 // small movement
                 // First do XY move, then A. This works always.
                 // (small moves and fast settings can sometimes cause problems)
-                if ((dX < 0.004) && (dY < 0.004) )
+                if ((dX < 0.004) && (dY < 0.004))
                 {
                     MainForm.DisplayText(" -- XYA command, XY already there --", KnownColor.Gray);
                 }
                 else
                 {
                     if (SlowXY)
-                    { 
+                    {
                         if ((double)Properties.Settings.Default.CNC_SmallMovementSpeed > SlowSpeedXY)
                         {
                             command = SmallMovementString + "X" + X.ToString(CultureInfo.InvariantCulture) +
@@ -414,8 +414,8 @@ namespace LitePlacer
                         }
                         else
                         {
-                                command = "G1 F" + SlowSpeedXY.ToString()
-                                        + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
+                            command = "G1 F" + SlowSpeedXY.ToString()
+                                    + " X" + X.ToString(CultureInfo.InvariantCulture) + " Y" + Y.ToString(CultureInfo.InvariantCulture);
                         }
                     }
                     else
@@ -492,10 +492,10 @@ namespace LitePlacer
                     command = "G0 " + "X" + X.ToString(CultureInfo.InvariantCulture) +
                                      " Y" + Y.ToString(CultureInfo.InvariantCulture) +
                                      " A" + Am.ToString(CultureInfo.InvariantCulture);
-                     _readyEvent.Reset();
+                    _readyEvent.Reset();
                     Com.Write("{\"gc\":\"" + command + "\"}");
                     _readyEvent.Wait();
-               }
+                }
             }
         }
 
@@ -586,7 +586,7 @@ namespace LitePlacer
             double b = MainForm.Setting.General_ZprobingHysteresis;
             string backoff = b.ToString("0.00", CultureInfo.InvariantCulture);
 
-            if (Controlboard==ControlBoardType.TinyG)
+            if (Controlboard == ControlBoardType.TinyG)
             {
                 if (set)
                 {
@@ -671,7 +671,11 @@ namespace LitePlacer
             VacuumOff();
         }
 
-        public void VacuumOn()
+        /// <summary>
+        /// Turn vacuum on.
+        /// </summary>
+        /// <param name="noDelay">Prevent waiting for the delay (General_PickupVacuumTime) to build up vacuum.</param>
+        public void VacuumOn(bool noDelay = false)
         {
             string command = "{\"gc\":\"M08\"}";
             if (MainForm.Setting.General_VacuumOutputInverted)
@@ -686,7 +690,9 @@ namespace LitePlacer
                     if (RawWrite(command))
                     {
                         VacuumIsOn = true;
-                        Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
+                        //only wait if we need to.
+                        if (!noDelay)
+                            Thread.Sleep(MainForm.Setting.General_PickupVacuumTime);
                     }
                 }
 
@@ -754,14 +760,14 @@ namespace LitePlacer
             string command = "{\"gc\":\"M03\"}";
             if (MainForm.Setting.General_PumpOutputInverted)
             {
-                command= "{\"gc\":\"M05\"}";
+                command = "{\"gc\":\"M05\"}";
             }
             if (Controlboard == ControlBoardType.TinyG)
             {
                 MainForm.DisplayText("PumpOn(), TinyG");
                 if (!PumpIsOn)
                 {
-                        if (RawWrite(command))
+                    if (RawWrite(command))
                     {
                         BugWorkaround();
                         Thread.Sleep(500);  // this much to develop vacuum
@@ -839,7 +845,7 @@ namespace LitePlacer
             MainForm.Pump_checkBox.Checked = PumpIsOn;
         }
 
-         // =================================================================================
+        // =================================================================================
         public void InterpretLine(string line)
         {
             // This is called from SerialComm dataReceived, and runs in a separate thread than UI            
@@ -965,7 +971,7 @@ namespace LitePlacer
                 MainForm.DisplayText("ReadyEvent sys group (depreciated)");
                 return;
             }
-            
+
             if (line.StartsWith("{\"r\":{\"x\":"))
             {
                 // response to reading settings for saving them
@@ -980,7 +986,7 @@ namespace LitePlacer
                 MainForm.DisplayText("ReadyEvent x group (depreciated)");
                 return;
             }
-            
+
             if (line.StartsWith("{\"r\":{\"y\":"))
             {
                 // response to reading settings for saving them

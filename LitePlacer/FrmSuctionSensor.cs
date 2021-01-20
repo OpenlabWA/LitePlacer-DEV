@@ -29,6 +29,10 @@ namespace LitePlacer
             }
         }
         bool EventBlock = false;
+
+        bool TestingRunning = false;
+        Button TestingNozzle = null;
+
         public FrmSuctionSensor(FormMain main)
         {
             _Main = main;
@@ -42,14 +46,16 @@ namespace LitePlacer
 
         void SaveSettings()
         {
-            _Main.Setting.SuctionSensorPressureSettings = SuctionSensorPressureSettings.ToJson(_ss.PressureSettings);         
+            _Main.Setting.SuctionSensorPressureSettings = SuctionSensorPressureSettings.ToJson(_ss.PressureSettings);
         }
-
         void LoadSettings()
         {
             EventBlock = true;
             var PressureSettings = _ss.PressureSettings;
             CbEnableSuctionSensor.Checked = PressureSettings.SuctionSensorEnable;
+            CbBeepOnBlockedNozzle.Checked = PressureSettings.BeepOnBlockedNozzle;
+            CbBeepOnPickupFail.Checked = PressureSettings.BeepOnPickupFail;
+            CbBeepOnPickupRetryExceeded.Checked = PressureSettings.BeepOnPickupRetryExceeded;
             buttonConnectSerial.Enabled = CbEnableSuctionSensor.Checked;
             CbIncrementComponent.Checked = PressureSettings.SuctionSensorIncrementEachRetry;
             NudPickupRetries.Value = PressureSettings.PickupRetryCount;
@@ -72,6 +78,10 @@ namespace LitePlacer
             RefreshPortList(PressureSettings.SuctionSensorPort);
             if (string.IsNullOrEmpty(PressureSettings.SuctionSensorPort) && comboBoxSerialPorts.SelectedIndex >= 0)
                 PressureSettings.SuctionSensorPort = comboBoxSerialPorts.Text;
+
+            buttonConnectSerial.Text = _ss.Connected ? "Disconnect" : "Connect";
+            //refresh the status label.
+            Ss_OnCommsDropout();
             EventBlock = false;
         }
 
@@ -107,9 +117,10 @@ namespace LitePlacer
 
         private void buttonConnectSerial_Click(object sender, EventArgs e)
         {
-            if (!_ss.Connected)
-                _ss.Init();
+            if (!_ss.Connected) _ss.Init();
             else _ss.Shutdown();
+
+            buttonConnectSerial.Text = _ss.Connected ? "Disconnect" : "Connect";
         }
 
         private void CbEnableSuctionSensor_CheckedChanged(object sender, EventArgs e)
@@ -215,42 +226,42 @@ namespace LitePlacer
             {
                 index = 0;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index, pressure);
                 labelNozzle1Pressure.Text = pressure.ToString();
             }
             else if (button.Name == buttonSetNozzle2.Name)
             {
                 index = 1;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index, pressure);
                 labelNozzle2Pressure.Text = pressure.ToString();
             }
             else if (button.Name == buttonSetNozzle3.Name)
             {
                 index = 2;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index,pressure);
                 labelNozzle3Pressure.Text = pressure.ToString();
             }
             else if (button.Name == buttonSetNozzle4.Name)
             {
                 index = 3;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index, pressure);
                 labelNozzle4Pressure.Text = pressure.ToString();
             }
             else if (button.Name == buttonSetNozzle5.Name)
             {
                 index = 4;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index, pressure);
                 labelNozzle5Pressure.Text = pressure.ToString();
             }
             else if (button.Name == buttonSetNozzle6.Name)
             {
                 index = 5;
                 _ss.PressureSettings.NozzlePressureSettings.RemoveAt(index);
-                _ss.PressureSettings.NozzlePressureSettings.Insert(pressure, index);
+                _ss.PressureSettings.NozzlePressureSettings.Insert(index, pressure);
                 labelNozzle6Pressure.Text = pressure.ToString();
             }
             ChangesMade = true;
@@ -259,7 +270,6 @@ namespace LitePlacer
             _Main.Vacuum_checkBox.Checked = false;
             _Main.Pump_checkBox.Checked = false;
         }
-
 
         private void buttonSetNozzle_Click(object sender, EventArgs e)
         {
@@ -291,7 +301,7 @@ namespace LitePlacer
                     TbPickupPressureFactor.BackColor = Color.Coral;
                     return;
                 }
-                else if (factor > 0.5)
+                else if (factor > 0.95)
                 {
                     TbPickupPressureFactor.BackColor = Color.Coral;
                     return;
@@ -310,7 +320,7 @@ namespace LitePlacer
             RefreshPortList();
             EventBlock = false;
         }
-        private void RefreshPortList(string select=null)
+        private void RefreshPortList(string select = null)
         {
             int pos = 0;
             comboBoxSerialPorts.Items.Clear();
@@ -318,7 +328,7 @@ namespace LitePlacer
             {
                 comboBoxSerialPorts.Items.Add(s);
                 if (!string.IsNullOrEmpty(select) && s.Equals(select, StringComparison.OrdinalIgnoreCase))
-                    pos= comboBoxSerialPorts.Items.IndexOf(s);
+                    pos = comboBoxSerialPorts.Items.IndexOf(s);
             }
 
             if (comboBoxSerialPorts.Items.Count == 0)
@@ -358,6 +368,140 @@ namespace LitePlacer
         private void FrmSuctionSensor_Load(object sender, EventArgs e)
         {
             LoadSettings();
+        }
+
+        private void CbBeepOnBlockedNozzle_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EventBlock) return;
+            ChangesMade = true;
+            _ss.PressureSettings.BeepOnBlockedNozzle = ((CheckBox)sender).Checked;
+        }
+
+        private void CbBeepOnPickupFail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EventBlock) return;
+            ChangesMade = true;
+            _ss.PressureSettings.BeepOnPickupFail = ((CheckBox)sender).Checked;
+        }
+
+        private void CbBeepOnPickupRetryExceeded_CheckedChanged(object sender, EventArgs e)
+        {
+            if (EventBlock) return;
+            ChangesMade = true;
+            _ss.PressureSettings.BeepOnPickupRetryExceeded = ((CheckBox)sender).Checked;
+        }
+        void TestPickupAndBlocked()
+        {
+            if (TestingRunning) return;
+            TestingRunning = true;
+            //save the pressure.
+            //Make sure pump and vacuum are on.
+            _Main.Cnc.VacuumOn();
+            _Main.Cnc.PumpOn();
+
+            Thread.Sleep(2000);
+            if (!CheckPressureOk(forNozzle: true))
+            {
+                _Main.Cnc.VacuumOff();
+                _Main.Cnc.PumpOff();
+                _Main.Vacuum_checkBox.Checked = false;
+                _Main.Pump_checkBox.Checked = false;
+                return;
+            }
+            var frm = this;
+            new Thread(() =>
+            {
+                try
+                {
+                    while (TestingNozzle != null)
+                    {
+                        Thread.Sleep(1000);
+                        TestPickupAndBlockedUI();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+                TestingRunning = false;
+            }).Start();
+        }
+
+        void TestPickupAndBlockedUI()
+        {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(TestPickupAndBlockedUI));
+                return;
+            }
+            try
+            {
+
+                var button = TestingNozzle;
+                if (button == null) return;
+                var pressure = _ss.SuctionPressure;
+                int? nozzlepressure = 0;
+                Thread.Sleep(500);
+                var index = 0;
+                if (button.Name == BtnTestPickupBlockNozzle1.Name)
+                    index = 0;
+                else if (button.Name == BtnTestPickupBlockNozzle2.Name) index = 1;
+                else if (button.Name == BtnTestPickupBlockNozzle3.Name) index = 2;
+                else if (button.Name == BtnTestPickupBlockNozzle4.Name) index = 3;
+                else if (button.Name == BtnTestPickupBlockNozzle5.Name) index = 4;
+                else if (button.Name == BtnTestPickupBlockNozzle6.Name) index = 5;
+
+                nozzlepressure = _ss.PressureSettings.NozzlePressureSettings[index];
+                if (nozzlepressure == null || nozzlepressure == 0)
+                {
+                    LblPickupDetected.Text = "Set all settings first";
+                    LblPickupDetected.BackColor = Color.Coral;
+                    return;
+                }
+
+                var pickuppressure = _ss.GetPickedupComponentPressure(nozzlepressure.Value);
+                var blockpressure = _ss.GetBlockedNozzlePressure(nozzlepressure.Value);
+                if (pickuppressure == null)
+                {
+                    LblPickupDetected.Text = "Set all settings first";
+                    LblPickupDetected.BackColor = Color.Coral;
+                }
+                else if (pressure < pickuppressure)
+                {
+                    LblPickupDetected.Text = "Pickup detected!";
+                    LblPickupDetected.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    LblPickupDetected.Text = "No pickup";
+                    LblPickupDetected.BackColor = SystemColors.Window;
+                }
+
+                if (blockpressure == null)
+                {
+                    LblBlockDetected.Text = "Set all settings first";
+                    LblBlockDetected.BackColor = Color.Coral;
+                }
+                else if (pressure < blockpressure)
+                {
+                    LblBlockDetected.Text = "Block detected!";
+                    LblBlockDetected.BackColor = Color.LightGreen;
+                }
+                else
+                {
+                    LblBlockDetected.Text = "No block detected";
+                    LblBlockDetected.BackColor = SystemColors.Window;
+                }
+            }
+            catch (Exception)
+            {
+
+                
+            }
+        }
+        private void BtnTestPickupBlockNozzle_Click(object sender, EventArgs e)
+        {
+            TestingNozzle = sender as Button;
+            TestPickupAndBlocked();
         }
     }
 }
