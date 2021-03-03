@@ -61,7 +61,7 @@ namespace LitePlacer
         public event Action<double> OnPressureChange;
         public event Action OnCommsDropout;
         public event Action<string> OnConnectionChange;
-
+       
 
         //Current values
         int _SuctionPressure = 0;
@@ -142,7 +142,7 @@ namespace LitePlacer
                 _Main.DisplayText("SuctionSensor:GetCurrentNozzlePressure Nozzle setting not found", System.Drawing.KnownColor.Red);
                 return null;
             }
-            return PressureSettings.NozzlePressureSettings[nozzlenumber];
+            return PressureSettings.NozzlePressureSettings[nozzlenumber-1];
         }
         /// <summary>
         /// Calculate pressure that would indicate nozzle is blocked, if sensor pressure is below this, then it could be blocked.
@@ -333,16 +333,16 @@ namespace LitePlacer
                 if (!ss.CheckTimeOutOk()) ss.Init();
             }
             //check if we've picked up a part, we'll monitor to ensure it hasn't been dropped.
-            else if (ss.PressureAtPickup > 0)
-            {
-                var pressurediff = ss.ComponentPickedupMinPressure * SuctionSensorPressureSettings.DropDetectionFactor;
-                if (ss.SuctionPressure - ss.PressureAtPickup > pressurediff)
-                {
-                    //Show the error message.
-                    ss.ShowError(SuctionSensorDroppedPart);
-                    ss.ClearPickup();
-                }
-            }
+            //else if (ss.PressureAtPickup > 0)
+            //{
+            //    var pressurediff = ss.ComponentPickedupMinPressure * SuctionSensorPressureSettings.DropDetectionFactor;
+            //    if (ss.SuctionPressure - ss.PressureAtPickup > pressurediff)
+            //    {
+            //        //Show the error message.
+            //        ss.ShowError(SuctionSensorDroppedPart);
+            //        ss.ClearPickup();
+            //    }
+            //}
             //restart the timer.
             ss._TmrPeriodic?.Change(ss.TimerTickRate, Timeout.Infinite);
         }
@@ -418,7 +418,7 @@ namespace LitePlacer
                 if (PressureAtPickup < ComponentPickedupMinPressure)
                     return ESuctionSensorState.PickupOk;
 
-                if (_RetryCount > PressureSettings.PickupRetryCount)
+                if (_RetryCount >= PressureSettings.PickupRetryCount)
                 {
                     MessageForUser = string.Format(SuctionSensorRetryExceeded, _RetryCount);
                     _Main.DisplayText(MessageForUser, System.Drawing.KnownColor.Red);
@@ -428,7 +428,7 @@ namespace LitePlacer
                     //Show a user confirmation, otherwise we can just return the response.
                     if (_Main.ShowMessageBox(MessageForUser, "Suction sensor error", System.Windows.Forms.MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)
                     {
-                        ClearPickup();
+                        ClearPickup(true);
                         return ESuctionSensorState.Cancel;
                     }
                 }
@@ -475,9 +475,9 @@ namespace LitePlacer
             return ESuctionSensorState.Cancel;
         }
 
-        public void ClearPickup()
+        public void ClearPickup(bool resetRetries=false)
         {
-            _RetryCount = 0;
+           if(resetRetries) _RetryCount = 0;
             AttemptedPickupTime = null;
             PressureAtPickup = 0;
             ComponentPickedupMinPressure = 0;
@@ -486,13 +486,27 @@ namespace LitePlacer
         /// <summary>
         /// We call this after we've placed our component, during this time we'll monitor to make sure we don't drop it on the way.
         /// </summary>
-        public void PlaceComplete()
+        public bool PlaceCompletedOk()
         {
+            //Make sure we haven't dropped it!
+            if (PressureAtPickup > 0)
+            {
+                var pressurediff = ComponentPickedupMinPressure * SuctionSensorPressureSettings.DropDetectionFactor;
+                if (SuctionPressure - PressureAtPickup > pressurediff)
+                {
+                    //Show the error message.
+                    ShowError(SuctionSensorDroppedPart);
+                    ClearPickup(true);
+                    return false;
+                }
+            }
+
             //Great!
             //Clear our pickup pressure so we stop checking.
-            ClearPickup();
+            ClearPickup(true);
+            return true;
         }
-
+              
         /// <summary>
         /// Called after we've dropped the component and we're back at the top of our Z travel.
         /// We monitor the pressure and make sure we don't have a blocked nozzle / component stuck to it.

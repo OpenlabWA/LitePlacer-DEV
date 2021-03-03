@@ -8716,15 +8716,16 @@ namespace LitePlacer
             }
             var ss = SuctionSensor.GetInstance(this);
             Cnc.VacuumOn();
+            DisplayText("PickUpPart_m(): Nozzle up");
             //Tell the suction sensor, we've attempted to pick up the part.
             ss.AttemptedPartPickup();
-            DisplayText("PickUpPart_m(): Nozzle up");
             if (!CNC_Z_m(0))
             {
                 //Finishes things off.
                 ss.ClearPickup();
                 return SuctionSensor.ESuctionSensorState.Cancel;
             }
+          
             return ss.PickupComplete();            
         }
 
@@ -9156,9 +9157,12 @@ namespace LitePlacer
                 distance2pcb = 2.0;
             };
 
+            if (!SuctionSensor.GetInstance(this).PlaceCompletedOk())
+                return false;
+
             if (!CNC_Z_m(Setting.General_ZtoPCB - distance2pcb))
             {
-                SuctionSensor.GetInstance(this).PlaceComplete();
+                SuctionSensor.GetInstance(this).ClearPickup();
                 return false;
             }
 
@@ -9564,7 +9568,8 @@ namespace LitePlacer
             //Up until now, we have been checking to ensure that we haven't dropped the part.
             //Technically we should wait until we're at the bottom of placing the part, but then we'd need to modify each method, so for now
             //we'll just take a shortcut.
-            SuctionSensor.GetInstance(this).PlaceComplete();
+            if(!SuctionSensor.GetInstance(this).PlaceCompletedOk())
+                return false;
 
             // Place it:
             if (AbortPlacement)
@@ -11676,6 +11681,13 @@ namespace LitePlacer
             {
                 return;
             };
+            if(MessageBox.Show("Is the crosshair placed on the hole of the next component?","Reset tape to component 1", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == 
+                DialogResult.No)
+            {
+                MessageBox.Show("Cancelled...");
+                return;
+            }
+
             int row = Tapes_dataGridView.CurrentCell.RowIndex;
             Tapes_dataGridView.Rows[row].Cells["FirstX_Column"].Value = Cnc.CurrentX.ToString("0.000", CultureInfo.InvariantCulture);
             Tapes_dataGridView.Rows[row].Cells["FirstY_Column"].Value = Cnc.CurrentY.ToString("0.000", CultureInfo.InvariantCulture);
